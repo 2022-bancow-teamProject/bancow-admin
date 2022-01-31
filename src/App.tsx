@@ -1,16 +1,16 @@
-import { Box } from "@mui/material";
-import { useState } from "react";
-import TopAppBar from "./components/TopAppBar";
-import LeftGNB from "./components/LeftGNB";
-import Main from "./components/Main";
+import { Box, CssBaseline } from "@mui/material";
+import { Route, Routes } from "react-router-dom";
+import Login from "./pages/Login";
+import Main from "./pages/Main";
 
 function App() {
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <Box sx={{ display: "flex" }}>
-      <TopAppBar isOpen={isOpen} setIsOpen={setIsOpen} />
-      <LeftGNB isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Main />
+      <CssBaseline />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/admin/*" element={<Main />} />
+      </Routes>
     </Box>
   );
 }

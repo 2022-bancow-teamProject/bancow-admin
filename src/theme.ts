@@ -17,3 +17,5 @@ const theme = createTheme({
 });
 
 export default theme;
+
+export const drawerWidth = 240;

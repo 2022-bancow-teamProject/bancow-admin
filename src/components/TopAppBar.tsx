@@ -1,8 +1,7 @@
 import { AppBar, IconButton, Toolbar } from "@mui/material";
 import { AccountCircle, Menu } from "@mui/icons-material";
 import { MenuProps } from "../interfaces";
-
-const drawerWidth = 240;
+import { drawerWidth } from "../theme";
 
 const TopAppBar: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
   return (
