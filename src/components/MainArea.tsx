@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import IntroPage from "../pages/IntroPage";
-import Review from "../pages/Review";
+import Review from "../pages/Review/Review";
 import Farmer from "../pages/Farmer";
 import Notice from "../pages/Notice";
 import News from "../pages/News";
@@ -8,6 +8,8 @@ import Event from "../pages/Event";
 import Faq from "../pages/Faq";
 import Qna from "../pages/Qna";
 import PopUp from "../pages/PopUp";
+import AddReview from "../pages/Review/AddReview";
+import EditReview from "../pages/Review/EditReview";
 
 const MainArea = () => {
   return (
@@ -15,6 +17,8 @@ const MainArea = () => {
       <Routes>
         <Route path="/" element={<IntroPage />} />
         <Route path="/review" element={<Review />} />
+        <Route path="/review/add" element={<AddReview />} />
+        <Route path="/review/:id" element={<EditReview />} />
         <Route path="/farmer" element={<Farmer />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/news" element={<News />} />

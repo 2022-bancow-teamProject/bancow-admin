@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ListItem, ListItemText } from "@mui/material";
-import { MenuItemProps } from "../interfaces";
+import { MenuItemProps } from "../../interfaces";
 
 const MenuItem: React.FC<MenuItemProps> = ({
   title,

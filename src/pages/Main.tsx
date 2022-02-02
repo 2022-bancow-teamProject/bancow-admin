@@ -1,6 +1,6 @@
 import { useState } from "react";
-import TopAppBar from "../components/TopAppBar";
-import LeftGNB from "../components/LeftGNB";
+import TopAppBar from "../components/layout/TopAppBar";
+import LeftGNB from "../components/layout/LeftGNB";
 import MainArea from "../components/MainArea";
 
 const Main = () => {

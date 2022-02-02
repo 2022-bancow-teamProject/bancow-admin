@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { ChangeBtn } from "../../interfaces";
 
-const Cancel: React.FC<ChangeBtn> = ({ setIsDelete }) => {
+const Cancel: React.FC<ChangeBtn> = ({ func }) => {
   return (
     <Button
       variant="contained"
@@ -14,7 +14,7 @@ const Cancel: React.FC<ChangeBtn> = ({ setIsDelete }) => {
           backgroundColor: "#4f585b"
         }
       }}
-      onClick={() => setIsDelete(false)}
+      onClick={func}
     >
       취소
     </Button>

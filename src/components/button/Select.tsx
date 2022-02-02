@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { ChangeBtn } from "../../interfaces";
 
-const Select: React.FC<ChangeBtn> = ({ setIsDelete }) => {
+const Select: React.FC<ChangeBtn> = ({ func }) => {
   return (
     <Button
       variant="contained"
@@ -14,7 +14,7 @@ const Select: React.FC<ChangeBtn> = ({ setIsDelete }) => {
           backgroundColor: "#009376"
         }
       }}
-      onClick={() => setIsDelete(true)}
+      onClick={func}
     >
       선택
     </Button>
