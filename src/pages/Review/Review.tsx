@@ -88,7 +88,9 @@ const Review = () => {
           )}
           <GridItem das={2}>{item.farm}</GridItem>
           <GridItem das={1}>{item.number}</GridItem>
-          <GridItem das={6}>{item.review}</GridItem>
+          <GridItem das={6} id={item.index}>
+            {item.review}
+          </GridItem>
           <GridItem das={2}>{item.name}</GridItem>
         </Grid>
       ))}

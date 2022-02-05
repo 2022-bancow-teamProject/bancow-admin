@@ -2,8 +2,13 @@ import { AppBar, IconButton, Toolbar } from "@mui/material";
 import { AccountCircle, Menu } from "@mui/icons-material";
 import { MenuProps } from "../../interfaces";
 import { drawerWidth } from "../../theme";
+import { useNavigate } from "react-router-dom";
 
 const TopAppBar: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
+  const navigate = useNavigate();
+  const myPage = () => {
+    navigate("/admin/mypage");
+  };
   return (
     <AppBar
       sx={{
@@ -31,6 +36,7 @@ const TopAppBar: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
         <IconButton
           color="inherit"
           sx={{ position: "absolute", right: "50px" }}
+          onClick={myPage}
         >
           <AccountCircle />
         </IconButton>
