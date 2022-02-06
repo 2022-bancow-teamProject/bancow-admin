@@ -1,7 +1,13 @@
 import { Box, Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { GridItemProps } from "../../interfaces";
 
-const GridItem: React.FC<GridItemProps> = ({ das, children }) => {
+const GridItem: React.FC<GridItemProps> = ({ das, id = null, children }) => {
+  const navigate = useNavigate();
+  const showDetail = () => {
+    if (id === null) return;
+    navigate(`${id}`);
+  };
   return (
     <Grid item xs={das} sx={{ textAlign: "center" }}>
       <Box
@@ -11,8 +17,10 @@ const GridItem: React.FC<GridItemProps> = ({ das, children }) => {
           lineHeight: 2.5,
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
-          overflow: "hidden"
+          overflow: "hidden",
+          cursor: id === null ? "default" : "pointer"
         }}
+        onClick={showDetail}
       >
         {children}
       </Box>

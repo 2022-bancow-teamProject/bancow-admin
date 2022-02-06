@@ -25,6 +25,7 @@ export interface MenuItemProps {
 
 export interface GridItemProps {
   das: number;
+  id?: number;
   children?: React.ReactChild;
 }
 
