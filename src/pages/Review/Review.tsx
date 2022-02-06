@@ -1,10 +1,8 @@
-import { Box, Checkbox, Grid, Typography } from "@mui/material";
 import { useState } from "react";
-import Add from "../components/button/Add";
-import Cancel from "../components/button/Cancel";
-import Delete from "../components/button/Delete";
-import Select from "../components/button/Select";
-import GridItem from "../components/gridtable/GridItem";
+import { Box, Checkbox, Grid, Pagination, Typography } from "@mui/material";
+import GridItem from "../../components/gridtable/GTItem";
+import GTselector from "../../components/gridtable/GTselector";
+import GTHeader from "../../components/gridtable/GTHeader";
 
 const data = [
   {
@@ -37,11 +35,12 @@ const Review = () => {
   const [isDelete, setIsDelete] = useState(false);
   const [checked, setChecked] = useState<number[]>([]);
 
-  const handleToggle = (value: number) => () => {
+  const handleCheck = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
     if (currentIndex === -1) {
+      // 선택됨 목록에 없으면
       newChecked.push(value);
     } else {
       newChecked.splice(currentIndex, 1);
@@ -50,38 +49,24 @@ const Review = () => {
     setChecked(newChecked);
   };
 
-  console.log(checked);
   return (
     <Box sx={{ height: "100%", position: "relative" }}>
       <Typography variant="h4" component="h2">
         메인 페이지 Review 관리
       </Typography>
-      <Box
-        sx={{
-          height: 50,
-          marginTop: 1,
-          display: "flex",
-          justifyContent: "flex-end"
-        }}
-      >
-        <Add />
-        {isDelete && <Delete setIsDelete={setIsDelete} />}
-        {isDelete ? (
-          <Cancel setIsDelete={setIsDelete} />
-        ) : (
-          <Select setIsDelete={setIsDelete} />
-        )}
-      </Box>
-      <Grid
-        container
-        sx={{ height: "40px", marginTop: 2, backgroundColor: "#b2bec3" }}
-      >
+      <GTselector
+        isDelete={isDelete}
+        setIsDelete={setIsDelete}
+        checked={checked}
+        setChecked={setChecked}
+      />
+      <GTHeader>
         <GridItem das={1}>번호</GridItem>
         <GridItem das={2}>농가</GridItem>
         <GridItem das={1}>호</GridItem>
         <GridItem das={6}>리뷰</GridItem>
         <GridItem das={2}>구매자</GridItem>
-      </Grid>
+      </GTHeader>
 
       {data.map((item) => (
         <Grid
@@ -92,21 +77,35 @@ const Review = () => {
           {isDelete ? (
             <Grid item xs={1} sx={{ textAlign: "center" }}>
               <Checkbox
-                onClick={handleToggle(item.index)}
+                onClick={handleCheck(item.index)}
                 checked={checked.indexOf(item.index) !== -1}
                 tabIndex={-1}
                 disableRipple
               />
             </Grid>
           ) : (
-            <GridItem das={1}>{item.index}</GridItem>
+            <GridItem das={1}>{item.index + 1}</GridItem>
           )}
           <GridItem das={2}>{item.farm}</GridItem>
           <GridItem das={1}>{item.number}</GridItem>
-          <GridItem das={6}>{item.review}</GridItem>
+          <GridItem das={6} id={item.index}>
+            {item.review}
+          </GridItem>
           <GridItem das={2}>{item.name}</GridItem>
         </Grid>
       ))}
+      <Pagination
+        count={10}
+        color="primary"
+        size="large"
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          position: "absolute",
+          bottom: 80
+        }}
+      />
     </Box>
   );
 };

@@ -2,11 +2,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-export default function Login() {
+const Signup = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -16,7 +16,6 @@ export default function Login() {
       password: data.get("password")
     });
   };
-
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -29,7 +28,7 @@ export default function Login() {
         }}
       >
         <Avatar sx={{ m: 4 }}>
-          <LockOutlinedIcon />
+          <LockOpenIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           관리자 로그인
@@ -59,8 +58,19 @@ export default function Login() {
           >
             Sign In
           </Button>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            color="success"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign Up
+          </Button>
         </Box>
       </Box>
     </Container>
   );
-}
+};
+
+export default Signup;

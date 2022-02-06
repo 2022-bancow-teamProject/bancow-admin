@@ -8,8 +8,8 @@ import {
   Collapse
 } from "@mui/material";
 import { ChevronLeft, ExpandLess, ExpandMore } from "@mui/icons-material";
-import { MenuProps } from "../interfaces";
-import { drawerWidth } from "../theme";
+import { MenuProps } from "../../interfaces";
+import { drawerWidth } from "../../theme";
 import MenuItem from "./MenuItem";
 
 const LeftGNB: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {

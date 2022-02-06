@@ -5,6 +5,17 @@ export interface MenuProps {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+export interface GTSelectorProps {
+  isDelete: boolean;
+  checked: number[];
+  setIsDelete: Dispatch<SetStateAction<boolean>>;
+  setChecked: Dispatch<SetStateAction<number[]>>;
+}
+
+export interface GTHeaderProps {
+  children?: React.ReactChild | React.ReactChild[];
+}
+
 export interface MenuItemProps {
   title: string;
   onClick?: () => void;
@@ -14,9 +25,10 @@ export interface MenuItemProps {
 
 export interface GridItemProps {
   das: number;
+  id?: number;
   children?: React.ReactChild;
 }
 
 export interface ChangeBtn {
-  setIsDelete: Dispatch<SetStateAction<boolean>>;
+  [func: string]: Dispatch<any>;
 }
