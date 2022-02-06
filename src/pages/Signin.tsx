@@ -6,7 +6,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-export default function Login() {
+export default function Signin() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -58,6 +58,15 @@ export default function Login() {
             sx={{ mt: 3, mb: 2 }}
           >
             Sign In
+          </Button>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            color="success"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign Up
           </Button>
         </Box>
       </Box>
