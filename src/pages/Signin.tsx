@@ -7,13 +7,14 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { axiosSignin } from "../api/auth";
 
 const RegEmail =
   /^([\w._-])*[a-zA-Z0-9]+([\w._-])*([a-zA-Z0-9])+([\w._-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/;
 
 const message = {
   email: "정확한 이메일 주소를 입력해 주세요",
-  longpass: "8자리 이상의 비밀번호를 설정해 주세요",
+  longpass: "8자리 이상의 비밀번호를 입력해 주세요",
   fail: "이메일, 비밀번호를 다시 확인해 주세요"
 };
 
@@ -21,19 +22,25 @@ type typeofError = "email" | "longpass" | "fail" | "";
 
 export default function Signin() {
   const [error, setError] = useState<typeofError>("");
-  const [eMail, setEMail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!RegEmail.test(eMail)) {
+    if (!RegEmail.test(email)) {
       return setError("email");
     }
-    if (password.length < 8) {
-      return setError("longpass");
+    // if (password.length < 8) {
+    //   return setError("longpass");
+    // }
+
+    const token = await axiosSignin({ email, password });
+    if (token) {
+      sessionStorage.setItem("token", token);
+      navigate("admin");
+    } else {
+      setError("fail");
     }
-    // 통신 경과가 fail 이면
-    // return setError("fail");
   };
 
   return (
@@ -63,8 +70,8 @@ export default function Signin() {
             name="email"
             label="Admin email"
             autoFocus
-            value={eMail}
-            onChange={(e) => setEMail(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             error={error === "longpass" || error === "fail"}
