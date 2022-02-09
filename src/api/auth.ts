@@ -1,4 +1,5 @@
-import axios, { AxiosPromise } from "axios";
+import axios from "axios";
+const baseApi = process.env.REACT_APP_BASE_API;
 
 interface IuserInfo {
   email: string;
@@ -18,10 +19,7 @@ interface signupSuccess {
 
 // 회원 가입
 export const axiosSignup = async (userInfo: IuserInfo) => {
-  const data = await axios.post<AxiosPromise<signupSuccess>>(
-    "register",
-    userInfo
-  );
+  const data = await axios.post<signupSuccess>(`${baseApi}register`, userInfo);
   return data;
 };
 
@@ -30,8 +28,27 @@ interface ISigninInfo {
   password: string;
 }
 
+interface signinSuccess {
+  data: {
+    token: string;
+    message: string;
+  };
+  status: string;
+}
+
 // 로그인
 export const axiosSignin = async (userInfo: ISigninInfo) => {
-  const data = await axios.post<AxiosPromise<signupSuccess>>("login", userInfo);
-  return data;
+  try {
+    const { data } = await axios.post<signinSuccess>(
+      `${baseApi}login`,
+      userInfo
+    );
+    return data.data.token;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message);
+    } else {
+      throw new Error("different error than axios");
+    }
+  }
 };
