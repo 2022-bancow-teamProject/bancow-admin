@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 
 ReactDOM.render(
-  <BrowserRouter basename={process.env.REACT_APP_BASE_URL}>
+  <BrowserRouter basename="manager">
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <App />
