@@ -1,5 +1,9 @@
 import Container from "@mui/material/Container";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import Stack from "@mui/material/Stack";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "번호", width: 70 },
@@ -77,6 +81,16 @@ const PopUp = () => {
           rowsPerPageOptions={[5]}
           checkboxSelection
         />
+      </div>
+      <div style={{ float: "right", marginTop: "40px" }}>
+        <Stack direction="row" spacing={2}>
+          <Button variant="outlined" startIcon={<DeleteIcon />}>
+            Delete
+          </Button>
+          <Button variant="contained" endIcon={<AddIcon />}>
+            Create
+          </Button>
+        </Stack>
       </div>
     </Container>
   );
