@@ -10,7 +10,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 }) => {
   const navigate = useNavigate();
   const handleClick = (path: string) => {
-    if (path) navigate(`/admin/${path}`);
+    if (path) navigate(`/manager/admin/${path}`);
     if (onClick) onClick();
   };
   return (
