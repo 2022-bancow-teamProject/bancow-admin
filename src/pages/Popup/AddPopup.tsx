@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
 
@@ -60,8 +61,13 @@ const AddPopup = () => {
       </TableContainer>
       <div style={{ float: "right", marginTop: "40px" }}>
         <Stack direction="row" spacing={2}>
-          <Button variant="outlined" startIcon={<DeleteIcon />}>
-            목록
+          <Button variant="outlined" startIcon={<ListAltIcon />}>
+            <Link
+              to="/manager/admin/popup"
+              style={{ textDecoration: "none", color: "#556cd6" }}
+            >
+              목록
+            </Link>
           </Button>
           <Button variant="contained" endIcon={<AddIcon />}>
             추가
