@@ -86,14 +86,14 @@ const PopUp = () => {
       <div style={{ float: "right", marginTop: "40px" }}>
         <Stack direction="row" spacing={2}>
           <Button variant="outlined" startIcon={<DeleteIcon />}>
-            Delete
+            삭제
           </Button>
           <Button variant="contained" endIcon={<AddIcon />}>
             <Link
-              to="/admin/popup/add"
+              to="/manager/admin/popup/add"
               style={{ textDecoration: "none", color: "#fff" }}
             >
-              Create
+              추가
             </Link>
           </Button>
         </Stack>
