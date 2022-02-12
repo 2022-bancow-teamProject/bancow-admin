@@ -37,6 +37,7 @@ export default function Signin() {
     const token = await axiosSignin({ email, password });
     if (token) {
       sessionStorage.setItem("token", token);
+      sessionStorage.setItem("user", email);
       navigate("admin");
     } else {
       setError("fail");
