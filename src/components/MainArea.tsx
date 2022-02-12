@@ -17,7 +17,7 @@ const MainArea = () => {
     <main style={{ flexGrow: 1, height: "100vh", padding: "80px 20px 20px" }}>
       <Routes>
         <Route path="/" element={<IntroPage />} />
-        <Route path="/mypage" element={<Mypage />} />
+        <Route path="mypage" element={<Mypage />} />
         <Route path="/review" element={<Review />} />
         <Route path="/review/add" element={<AddReview />} />
         <Route path="/review/:id" element={<EditReview />} />
