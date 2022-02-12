@@ -3,24 +3,34 @@ const baseApi = process.env.REACT_APP_BASE_API;
 
 interface IuserInfo {
   email: string;
-  password1: string;
+  username: string;
+  password: string;
   password2: string;
 }
 
 interface signupSuccess {
   data: {
-    data: {
-      result: boolean;
-      message: string;
-    };
-    status: string;
+    result: boolean;
+    message: string;
   };
+  status: string;
 }
 
 // 회원 가입
 export const axiosSignup = async (userInfo: IuserInfo) => {
-  const data = await axios.post<signupSuccess>(`${baseApi}register`, userInfo);
-  return data;
+  try {
+    const { data } = await axios.post<signupSuccess>(
+      `${baseApi}register`,
+      userInfo
+    );
+    return data.data.result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message);
+    } else {
+      throw new Error("different error than axios");
+    }
+  }
 };
 
 interface ISigninInfo {

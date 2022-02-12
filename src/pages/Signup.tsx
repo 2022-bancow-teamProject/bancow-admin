@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { axiosSignup } from "../api/auth";
 import Swal from "sweetalert2";
 
 const RegEmail =
@@ -15,48 +16,55 @@ const RegEmail =
 const message = {
   email: "정확한 이메일 주소를 입력해 주세요",
   notsame: "비밀번호와 비밀번호 확인의 값이 다릅니다",
-  longpass: "8자리 이상의 비밀번호를 설정해 주세요"
+  longpass: "8자리 이상의 비밀번호를 설정해 주세요",
+  name: "이름을 입력해 주세요"
 };
 
-type typeofError = "email" | "notsame" | "longpass" | "";
+type typeofError = "email" | "name" | "notsame" | "longpass" | "";
 
 const Signup = () => {
   const [error, setError] = useState<typeofError>("");
-  const [eMail, setEMail] = useState("");
-  const [pass1, setPass1] = useState("");
-  const [pass2, setPass2] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const navigate = useNavigate();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!RegEmail.test(eMail)) {
+    if (!RegEmail.test(email)) {
       return setError("email");
     }
-    if (pass1.length < 8) {
+    if (!username) {
+      return setError("name");
+    }
+    if (password.length < 8) {
       return setError("longpass");
     }
-    if (pass1 !== pass2) {
+    if (password !== password2) {
       return setError("notsame");
     }
-    console.log(eMail, pass1, pass2);
+    const res = await axiosSignup({ email, username, password, password2 });
     // 통신 결과에 따른 분기
-    // if (res === "success") {
-    //   Swal.fire(
-    //     "가입 완료",
-    //     "입력하신 이메일로 인증 메일이 발송되었습니다",
-    //     "success"
-    //   ).then(()=> {navigate('/')});
-    // } else {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "가입 실패",
-    //     text: "다시 한번 가입을 시도해 주세요"
-    //   });
-    // }
+    if (res) {
+      Swal.fire(
+        "가입 완료",
+        "입력하신 이메일로 인증 메일이 발송되었습니다",
+        "success"
+      ).then(() => {
+        navigate("/manager");
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "가입 실패",
+        text: "이미 가입 요청된 이메일입니다 다시 시도해 주세요"
+      });
+    }
   };
 
   useEffect(() => {
     setError("");
-  }, [eMail, pass1, pass2]);
+  }, [email, username, password, password2]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -85,8 +93,20 @@ const Signup = () => {
             name="email"
             label="Admin email"
             autoFocus
-            value={eMail}
-            onChange={(e) => setEMail(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            error={error === "name"}
+            type="text"
+            margin="normal"
+            required
+            fullWidth
+            name="name"
+            label="Admin name"
+            autoFocus
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             error={error === "longpass"}
@@ -96,8 +116,8 @@ const Signup = () => {
             name="password1"
             label="Password"
             type="password"
-            value={pass1}
-            onChange={(e) => setPass1(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <TextField
             error={error === "notsame"}
@@ -107,8 +127,8 @@ const Signup = () => {
             name="password2"
             label="Password reconfirm"
             type="password"
-            value={pass2}
-            onChange={(e) => setPass2(e.target.value)}
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
           />
           {error && <span style={{ color: "red" }}>{message[error]}</span>}
           <Button
@@ -125,7 +145,7 @@ const Signup = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/manager")}
           >
             Sign In
           </Button>
