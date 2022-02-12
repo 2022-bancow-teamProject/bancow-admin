@@ -11,6 +11,7 @@ import PopUp from "../pages/PopUp";
 import AddReview from "../pages/Review/AddReview";
 import EditReview from "../pages/Review/EditReview";
 import Mypage from "../pages/Mypage";
+import AddPopup from "../pages/AddPopup";
 
 const MainArea = () => {
   return (
@@ -28,6 +29,7 @@ const MainArea = () => {
         <Route path="/faq" element={<Faq />} />
         <Route path="/qna" element={<Qna />} />
         <Route path="/popup" element={<PopUp />} />
+        <Route path="/popup/add" element={<AddPopup />} />
       </Routes>
     </main>
   );

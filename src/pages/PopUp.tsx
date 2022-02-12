@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Container from "@mui/material/Container";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
@@ -20,49 +21,49 @@ const rows = [
     end_date: "2019-01-13"
   },
   {
-    id: 1,
+    id: 2,
     title: "내 소의 출하 일정과 등급 판정 결과 확인",
     start_date: "2019-01-12",
     end_date: "2019-01-13"
   },
   {
-    id: 1,
+    id: 3,
     title: "내 소의 출하 일정과 등급 판정 결과 확인",
     start_date: "2019-01-12",
     end_date: "2019-01-13"
   },
   {
-    id: 1,
+    id: 4,
     title: "내 소의 출하 일정과 등급 판정 결과 확인",
     start_date: "2019-01-12",
     end_date: "2019-01-13"
   },
   {
-    id: 1,
+    id: 5,
     title: "내 소의 출하 일정과 등급 판정 결과 확인",
     start_date: "2019-01-12",
     end_date: "2019-01-13"
   },
   {
-    id: 1,
+    id: 6,
     title: "내 소의 출하 일정과 등급 판정 결과 확인",
     start_date: "2019-01-12",
     end_date: "2019-01-13"
   },
   {
-    id: 1,
+    id: 7,
     title: "내 소의 출하 일정과 등급 판정 결과 확인",
     start_date: "2019-01-12",
     end_date: "2019-01-13"
   },
   {
-    id: 1,
+    id: 8,
     title: "내 소의 출하 일정과 등급 판정 결과 확인",
     start_date: "2019-01-12",
     end_date: "2019-01-13"
   },
   {
-    id: 1,
+    id: 9,
     title: "내 소의 출하 일정과 등급 판정 결과 확인",
     start_date: "2019-01-12",
     end_date: "2019-01-13"
@@ -88,7 +89,12 @@ const PopUp = () => {
             Delete
           </Button>
           <Button variant="contained" endIcon={<AddIcon />}>
-            Create
+            <Link
+              to="/admin/popup/add"
+              style={{ textDecoration: "none", color: "#fff" }}
+            >
+              Create
+            </Link>
           </Button>
         </Stack>
       </div>
