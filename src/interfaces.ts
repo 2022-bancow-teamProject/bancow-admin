@@ -33,3 +33,8 @@ export interface GridItemProps {
 export interface ChangeBtn {
   [func: string]: Dispatch<any>;
 }
+
+export interface DatePickerProps {
+  datePick: [string | null, string | null];
+  setDatePick: Dispatch<SetStateAction<[string | null, string | null]>>;
+}

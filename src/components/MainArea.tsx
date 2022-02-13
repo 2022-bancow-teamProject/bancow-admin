@@ -4,7 +4,7 @@ import Review from "../pages/Review/Review";
 import Farmer from "../pages/Farmer";
 import Notice from "../pages/Notice";
 import News from "../pages/News";
-import Event from "../pages/Event";
+import Event from "../pages/Event/Event";
 import Faq from "../pages/Faq";
 import Qna from "../pages/Qna";
 import PopUp from "../pages/PopUp";
@@ -12,6 +12,7 @@ import AddReview from "../pages/Review/AddReview";
 import EditReview from "../pages/Review/EditReview";
 import Mypage from "../pages/Mypage";
 import UserList from "../pages/UserList";
+import AddEvent from "../pages/Event/AddEvent";
 
 const MainArea = () => {
   return (
@@ -26,6 +27,7 @@ const MainArea = () => {
         <Route path="/notice" element={<Notice />} />
         <Route path="/news" element={<News />} />
         <Route path="/event" element={<Event />} />
+        <Route path="/event/add" element={<AddEvent />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/qna" element={<Qna />} />
         <Route path="/popup" element={<PopUp />} />
