@@ -24,6 +24,7 @@ type typeofError = "email" | "name" | "notsame" | "longpass" | "";
 
 const Signup = () => {
   const [error, setError] = useState<typeofError>("");
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -43,6 +44,7 @@ const Signup = () => {
     if (password !== password2) {
       return setError("notsame");
     }
+    setLoading(true);
     const res = await axiosSignup({ email, username, password, password2 });
     // 통신 결과에 따른 분기
     if (res) {
@@ -60,6 +62,7 @@ const Signup = () => {
         text: "이미 가입 요청된 이메일입니다 다시 시도해 주세요"
       });
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -135,6 +138,7 @@ const Signup = () => {
             type="submit"
             fullWidth
             variant="contained"
+            disabled={loading}
             color="success"
             sx={{ mt: 3, mb: 2 }}
           >
@@ -144,6 +148,7 @@ const Signup = () => {
             type="button"
             fullWidth
             variant="contained"
+            disabled={loading}
             sx={{ mt: 3, mb: 2 }}
             onClick={() => navigate("/manager")}
           >

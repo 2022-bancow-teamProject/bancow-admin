@@ -12,6 +12,7 @@ import AddPopup from "../pages/Popup/AddPopup";
 import AddReview from "../pages/Review/AddReview";
 import EditReview from "../pages/Review/EditReview";
 import Mypage from "../pages/Mypage";
+import UserList from "../pages/UserList";
 
 const MainArea = () => {
   return (
@@ -30,6 +31,7 @@ const MainArea = () => {
         <Route path="/qna" element={<Qna />} />
         <Route path="/popup" element={<Popup />} />
         <Route path="/popup/add" element={<AddPopup />} />
+        <Route path="/userlist" element={<UserList />} />
       </Routes>
     </main>
   );
