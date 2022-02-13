@@ -1,22 +1,77 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container, Grid, Typography, Input } from "@mui/material";
 import { AddCircleOutline } from "@mui/icons-material";
 import AddContentBtns from "../../components/button/AddContentBtns";
 import DatePicker from "../../components/input/DatePicker";
+import { axiosAddEvent } from "../../api/event";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AddEvent = () => {
   const [datePick, setDatePick] = useState<[string | null, string | null]>([
     null,
     null
   ]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [url, setUrl] = useState("");
   const [file, setFiles] = useState<File>();
 
+  const [isEmpty, setIsEmpty] = useState(true);
+
   const inputPoster = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (title && content && url && file && datePick[0] && datePick[1]) {
+      setIsEmpty(false);
+    } else {
+      setIsEmpty(true);
+    }
+  }, [title, content, url, file, datePick]);
 
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event?.target?.files;
     if (files) {
       setFiles(files[0]);
+    }
+  };
+
+  const addEvent = async () => {
+    const formData = new FormData();
+    formData.append("event_image", file as Blob);
+    formData.append(
+      "event_request",
+      new Blob(
+        [
+          JSON.stringify({
+            title,
+            content,
+            url,
+            start_date: datePick[0],
+            end_date: datePick[1]
+          })
+        ],
+        { type: "application/json" }
+      )
+    );
+
+    const res = await axiosAddEvent(formData);
+
+    if (res) {
+      Swal.fire(
+        "등록 완료",
+        "새로운 이벤트 등록이 완료되었습니다.",
+        "success"
+      ).then(() => {
+        navigate(-1);
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "등록 실패",
+        text: "이벤트 등록에 실패하였습니다."
+      });
     }
   };
 
@@ -40,19 +95,31 @@ const AddEvent = () => {
             제목
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <Input required id="title" fullWidth />
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              fullWidth
+            />
           </Grid>
           <Typography variant="h6" component="h2">
             URL
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <Input required id="url" fullWidth />
+            <Input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              fullWidth
+            />
           </Grid>
           <Typography variant="h6" component="h2">
             내용
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <Input required id="content" fullWidth />
+            <Input
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              fullWidth
+            />
           </Grid>
           <Typography variant="h6" component="h2" sx={{ marginBottom: 3 }}>
             일정
@@ -87,9 +154,8 @@ const AddEvent = () => {
                 />
               )}
               <input
-                required
-                id="img"
                 type="file"
+                accept="image/png"
                 style={{
                   position: "absolute",
                   width: "0",
@@ -104,7 +170,7 @@ const AddEvent = () => {
             </div>
           </Grid>
         </Grid>
-        <AddContentBtns />
+        <AddContentBtns add={addEvent} btnstate={isEmpty} />
       </Container>
     </>
   );
