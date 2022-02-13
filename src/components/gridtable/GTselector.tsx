@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { delOnePopupRequest } from "../../api/popup";
 import { Box } from "@mui/material";
 import { GTSelectorProps } from "../../interfaces";
 import Add from "../button/Add";
@@ -35,7 +36,7 @@ const GTselector: React.FC<GTSelectorProps> = ({
     >
       <Add func={moveAddpage} />
       {isDelete && <Delete func={toggleHandler} />}
-      {isDelete ? (
+      {checked ? (
         <Cancel func={toggleHandler} />
       ) : (
         <Select func={toggleHandler} />

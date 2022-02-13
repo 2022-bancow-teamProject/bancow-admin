@@ -39,10 +39,6 @@ const PopUp = () => {
     setChecked(newChecked);
   };
 
-  const selectRequest = () => {
-    console.log("y");
-  };
-
   return (
     <Container component="main">
       <Box sx={{ height: "100%", position: "relative" }}>
