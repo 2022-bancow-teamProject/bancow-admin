@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Container, Grid, Typography, Input } from "@mui/material";
-import { AddCircleOutline } from "@mui/icons-material";
+import { AddCircleOutline, Delete } from "@mui/icons-material";
 import AddContentBtns from "../../components/button/AddContentBtns";
 import DatePicker from "../../components/input/DatePicker";
 import { axiosAddEvent } from "../../api/event";
@@ -15,7 +15,7 @@ const AddEvent = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [url, setUrl] = useState("");
-  const [file, setFiles] = useState<File>();
+  const [file, setFiles] = useState<File | string>();
 
   const [isEmpty, setIsEmpty] = useState(true);
 
@@ -147,10 +147,26 @@ const AddEvent = () => {
                 cursor: "pointer"
               }}
             >
-              {file && <img src={URL.createObjectURL(file)} alt="img" />}
+              {typeof file === "object" && (
+                <img src={URL.createObjectURL(file)} alt="img" />
+              )}
               {!file && (
                 <AddCircleOutline
                   sx={{ color: "#d3cacad7", fontSize: "36px" }}
+                />
+              )}
+              {file && (
+                <Delete
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFiles("");
+                  }}
+                  sx={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    fontSize: "28px"
+                  }}
                 />
               )}
               <input
