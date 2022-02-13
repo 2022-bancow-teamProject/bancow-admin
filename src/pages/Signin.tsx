@@ -37,6 +37,7 @@ export default function Signin() {
     const token = await axiosSignin({ email, password });
     if (token) {
       sessionStorage.setItem("token", token);
+      sessionStorage.setItem("user", email);
       navigate("admin");
     } else {
       setError("fail");
@@ -99,7 +100,7 @@ export default function Signin() {
             variant="contained"
             color="success"
             sx={{ mt: 3, mb: 2 }}
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/manager/signup")}
           >
             Sign Up
           </Button>

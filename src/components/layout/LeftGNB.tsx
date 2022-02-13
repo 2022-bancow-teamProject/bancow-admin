@@ -45,7 +45,8 @@ const LeftGNB: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
         sx={{
           height: "100%",
           paddingTop: 2,
-          borderRight: "1px solid #AAAAB1"
+          borderRight: "1px solid #AAAAB1",
+          position: "relative"
         }}
       >
         <MenuItem title="컨텐츠 관리" onClick={handleClick}>
@@ -66,6 +67,16 @@ const LeftGNB: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
           <MenuItem title="팝업" path="popup"></MenuItem>
         </List>
         <Divider />
+        <List
+          sx={{
+            position: "absolute",
+            width: "100%",
+            bottom: "70px"
+          }}
+        >
+          <Divider />
+          <MenuItem title="관리자 권한 변경" path="userlist"></MenuItem>
+        </List>
       </Box>
     </Box>
   );

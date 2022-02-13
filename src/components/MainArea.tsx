@@ -6,18 +6,20 @@ import Notice from "../pages/Notice";
 import News from "../pages/News";
 import Event from "../pages/Event";
 import Faq from "../pages/Faq";
-import Qna from "../pages/Qna";
+import Qna from "../pages/FarmRequest/Qna";
 import PopUp from "../pages/PopUp";
 import AddReview from "../pages/Review/AddReview";
 import EditReview from "../pages/Review/EditReview";
 import Mypage from "../pages/Mypage";
+import UserList from "../pages/UserList";
+import FarmRequestDetail from "../pages/FarmRequest/FarmRequestDetail";
 
 const MainArea = () => {
   return (
     <main style={{ flexGrow: 1, height: "100vh", padding: "80px 20px 20px" }}>
       <Routes>
         <Route path="/" element={<IntroPage />} />
-        <Route path="/mypage" element={<Mypage />} />
+        <Route path="mypage" element={<Mypage />} />
         <Route path="/review" element={<Review />} />
         <Route path="/review/add" element={<AddReview />} />
         <Route path="/review/:id" element={<EditReview />} />
@@ -27,7 +29,9 @@ const MainArea = () => {
         <Route path="/event" element={<Event />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/qna" element={<Qna />} />
+        <Route path="/qnadetail" element={<FarmRequestDetail />} />
         <Route path="/popup" element={<PopUp />} />
+        <Route path="/userlist" element={<UserList />} />
       </Routes>
     </main>
   );

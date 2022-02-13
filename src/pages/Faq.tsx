@@ -3,7 +3,7 @@ import { Box, Checkbox, Grid, Pagination, Typography } from "@mui/material";
 import GridItem from "../components/gridtable/GTItem";
 import GTselector from "../components/gridtable/GTselector";
 import GTHeader from "../components/gridtable/GTHeader";
-import { getFarmRequest } from "../api/faq";
+import { getFarmRequest } from "../api/qna";
 
 const data = [
   {
@@ -54,7 +54,7 @@ const Faq = () => {
   return (
     <Box sx={{ height: "100%", position: "relative" }}>
       <Typography variant="h4" component="h2">
-        자주 묻는 질문
+        자주묻는 질문
       </Typography>
       <GTselector
         isDelete={isDelete}

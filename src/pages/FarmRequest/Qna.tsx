@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Box, Checkbox, Grid, Pagination, Typography } from "@mui/material";
-import GridItem from "../components/gridtable/GTItem";
-import GTselector from "../components/gridtable/GTselector";
-import GTHeader from "../components/gridtable/GTHeader";
-import { FarmQnaResponse, getFarmRequest } from "../api/faq";
+import GridItem from "../../components/gridtable/GTItem";
+import GTselector from "../../components/gridtable/GTselector";
+import GTHeader from "../../components/gridtable/GTHeader";
+import { FarmQnaResponse, getFarmRequest } from "../../api/qna";
 import { compareAsc, format } from "date-fns";
 
 const Qna = () => {
@@ -11,11 +11,17 @@ const Qna = () => {
   const [checked, setChecked] = useState<number[]>([]);
   const [data, setData] = useState<FarmQnaResponse>();
   useEffect(() => {
-    getFarmRequest(0).then((result) => {
-      setData(result);
-    });
+    (async () => {
+      const data = await getFarmRequest(0);
+      setData(data);
+    })();
   }, []);
-
+  const pageNation = async (page: number) => {
+    const data = await getFarmRequest(page);
+    if (data) {
+      setData(data);
+    }
+  };
   const handleCheck = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -29,7 +35,9 @@ const Qna = () => {
 
     setChecked(newChecked);
   };
-
+  const selectRequest = () => {
+    console.log("k");
+  };
   return (
     <Box sx={{ height: "100%", position: "relative" }}>
       <Typography variant="h4" component="h2">
@@ -65,7 +73,9 @@ const Qna = () => {
               />
             </Grid>
           ) : (
-            <GridItem das={1}>{item.id}</GridItem>
+            <GridItem onClick={selectRequest} das={1}>
+              {item.id}
+            </GridItem>
           )}
           <GridItem das={2}>{item.farmName}</GridItem>
           <GridItem das={1}>{item.farmQnaName}</GridItem>
@@ -78,7 +88,8 @@ const Qna = () => {
         </Grid>
       ))}
       <Pagination
-        count={10}
+        count={data?.data.totalPages}
+        onChange={(event, page) => pageNation(page - 1)}
         color="primary"
         size="large"
         style={{
