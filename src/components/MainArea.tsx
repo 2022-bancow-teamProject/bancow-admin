@@ -6,12 +6,13 @@ import Notice from "../pages/Notice";
 import News from "../pages/News";
 import Event from "../pages/Event/Event";
 import Faq from "../pages/Faq";
-import Qna from "../pages/Qna";
+import Qna from "../pages/FarmRequest/Qna";
 import PopUp from "../pages/PopUp";
 import AddReview from "../pages/Review/AddReview";
 import EditReview from "../pages/Review/EditReview";
 import Mypage from "../pages/Mypage";
 import UserList from "../pages/UserList";
+import FarmRequestDetail from "../pages/FarmRequest/FarmRequestDetail";
 import AddEvent from "../pages/Event/AddEvent";
 
 const MainArea = () => {
@@ -30,6 +31,7 @@ const MainArea = () => {
         <Route path="/event/add" element={<AddEvent />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/qna" element={<Qna />} />
+        <Route path="/qna/:id" element={<FarmRequestDetail />} />
         <Route path="/popup" element={<PopUp />} />
         <Route path="/userlist" element={<UserList />} />
       </Routes>

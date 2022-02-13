@@ -1,41 +1,32 @@
 import { useEffect, useState } from "react";
 import { Box, Checkbox, Grid, Pagination, Typography } from "@mui/material";
-import GridItem from "../components/gridtable/GTItem";
-import GTselector from "../components/gridtable/GTselector";
-import GTHeader from "../components/gridtable/GTHeader";
-import { getFarmRequest } from "../api/qna";
+import GridItem from "../../components/gridtable/GTItem";
+import GTselector from "../../components/gridtable/GTselector";
+import GTHeader from "../../components/gridtable/GTHeader";
+import {
+  deleteFarmRequest,
+  FarmQnaResponse,
+  getFarmRequest
+} from "../../api/qna";
+import { format } from "date-fns";
 
-const data = [
-  {
-    index: 0,
-    category: "구매하기",
-    question: "구매 금액은 어떻게 지불하나요?",
-    answer: "보유하고 계신 예치금에서 구매하신.",
-    date: "22.2.10"
-  },
-  {
-    index: 1,
-    category: "구매하기",
-    question: "구매 금액은 어떻게 지불하나요?",
-    answer: "보유하고 계신 예치금에서 구매하신",
-    date: "22.2.10"
-  },
-  {
-    index: 2,
-    category: "구매하기",
-    question: "구매 금액은 어떻게 지불하나요ㅋ?",
-    answer: "보유하고 계신 예치금에서 구매하신",
-    date: "22.2.10"
-  }
-];
-
-const Faq = () => {
+const Qna = () => {
   const [isDelete, setIsDelete] = useState(false);
   const [checked, setChecked] = useState<number[]>([]);
-
+  const [data, setData] = useState<FarmQnaResponse>();
   useEffect(() => {
-    getFarmRequest(1);
+    (async () => {
+      const data = await getFarmRequest(0);
+      setData(data);
+    })();
   }, []);
+
+  const pageNation = async (page: number) => {
+    const data = await getFarmRequest(page);
+    if (data) {
+      setData(data);
+    }
+  };
 
   const handleCheck = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -51,10 +42,19 @@ const Faq = () => {
     setChecked(newChecked);
   };
 
+  const selectRequest = () => {
+    console.log("k");
+  };
+
+  // QNA 목록 선택 삭제
+  const deleteQna = async () => {
+    await deleteFarmRequest({ id: checked });
+  };
+
   return (
     <Box sx={{ height: "100%", position: "relative" }}>
       <Typography variant="h4" component="h2">
-        자주묻는 질문
+        농가입점
       </Typography>
       <GTselector
         isDelete={isDelete}
@@ -64,40 +64,45 @@ const Faq = () => {
       />
       <GTHeader>
         <GridItem das={1}>번호</GridItem>
-        <GridItem das={2}>카테고리</GridItem>
-        <GridItem das={1}>질문</GridItem>
-        <GridItem das={6}>답변</GridItem>
+        <GridItem das={2}>농가 이름</GridItem>
+        <GridItem das={1}>이름</GridItem>
+        <GridItem das={6}>확인유무</GridItem>
         <GridItem das={2}>등록일</GridItem>
       </GTHeader>
 
-      {data.map((item) => (
+      {data?.data.content.map((item) => (
         <Grid
-          key={item.index}
+          key={item.id}
           container
           sx={{ height: "40px", marginTop: 0.4, backgroundColor: "#e8e8e8" }}
         >
           {isDelete ? (
             <Grid item xs={1} sx={{ textAlign: "center" }}>
               <Checkbox
-                onClick={handleCheck(item.index)}
-                checked={checked.indexOf(item.index) !== -1}
+                onClick={handleCheck(item.id)}
+                checked={checked.indexOf(item.id) !== -1}
                 tabIndex={-1}
                 disableRipple
               />
             </Grid>
           ) : (
-            <GridItem das={1}>{item.index + 1}</GridItem>
+            <GridItem onClick={selectRequest} das={1}>
+              {item.id}
+            </GridItem>
           )}
-          <GridItem das={2}>{item.category}</GridItem>
-          <GridItem das={1}>{item.question}</GridItem>
-          <GridItem das={6} id={item.index}>
-            {item.answer}
+          <GridItem das={2}>{item.farmName}</GridItem>
+          <GridItem das={1}>{item.farmQnaName}</GridItem>
+          <GridItem das={6} id={item.id}>
+            {item.checked ? "O" : "X"}
           </GridItem>
-          <GridItem das={2}>{item.date}</GridItem>
+          <GridItem das={2}>
+            {format(new Date(item.createDate), "yyyy-MM-dd")}
+          </GridItem>
         </Grid>
       ))}
       <Pagination
-        count={10}
+        count={data?.data.totalPages}
+        onChange={(event, page) => pageNation(page - 1)}
         color="primary"
         size="large"
         style={{
@@ -112,4 +117,4 @@ const Faq = () => {
   );
 };
 
-export default Faq;
+export default Qna;
