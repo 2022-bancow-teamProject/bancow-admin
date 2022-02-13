@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Box, Grid, Typography, Paper } from "@mui/material";
-import { FarmQnaDetail, getFarmRequestDetail } from "../../api/qna";
+import {
+  deleteFarmRequestDetail,
+  FarmQnaDetail,
+  getFarmRequestDetail
+} from "../../api/qna";
 import { styled } from "@mui/material/styles";
 import Delete from "../../components/button/Delete";
 import List from "../../components/button/List";
@@ -35,6 +39,17 @@ const FarmRequestDetail = () => {
     textAlign: "center",
     color: theme.palette.text.secondary
   }));
+
+  const gobackToList = () => {
+    navigate("/manager/admin/qna");
+  };
+
+  const deleteQna = async () => {
+    const result = await deleteFarmRequestDetail(id);
+    alert(result?.data.message);
+    gobackToList();
+  };
+
   return (
     <Box
       sx={{
@@ -55,8 +70,8 @@ const FarmRequestDetail = () => {
           marginBottom: 8
         }}
       >
-        <List func={() => navigate("/manager/admin/qna")}></List>
-        <Delete></Delete>
+        <List func={gobackToList}></List>
+        <Delete func={deleteQna}></Delete>
       </Box>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={2}>

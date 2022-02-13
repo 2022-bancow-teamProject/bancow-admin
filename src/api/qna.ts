@@ -37,6 +37,14 @@ export interface FarmQnaDetail {
   };
 }
 
+export interface FarmQnaDetailResponse {
+  data: {
+    result: boolean;
+    message: string;
+  };
+  status: string;
+}
+
 export const getFarmRequest = async (page: number) => {
   const token = sessionStorage.getItem("token");
   const headers = {
@@ -72,8 +80,30 @@ export const getFarmRequestDetail = async (id: string | undefined) => {
     const { data } = await axios.get<FarmQnaDetail>(`${baseApi}farmqna/${id}`, {
       headers
     });
-    console.log(data);
-    console.log(token);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message);
+    } else {
+      throw new Error("different error than axios");
+    }
+  }
+};
+
+export const deleteFarmRequestDetail = async (id: string | undefined) => {
+  const token = sessionStorage.getItem("token");
+  const headers = {
+    token: `${token}`,
+    accept: "application/json"
+  };
+
+  try {
+    const { data } = await axios.delete<FarmQnaDetailResponse>(
+      `${baseApi}farmqna/${id}`,
+      {
+        headers
+      }
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
