@@ -31,11 +31,13 @@ export interface GridItemProps {
 }
 
 export interface ChangeBtn {
+  editform?: boolean;
   btnstate?: boolean;
   func?: Dispatch<any>;
 }
 
 export interface AddContentBtn {
+  editform?: boolean;
   btnstate?: boolean;
   add?: (e?: any) => Promise<void>;
 }

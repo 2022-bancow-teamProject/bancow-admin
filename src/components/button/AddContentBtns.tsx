@@ -4,7 +4,11 @@ import { AddContentBtn } from "../../interfaces";
 import Add from "./Add";
 import Cancel from "./Cancel";
 
-const AddContentBtns: React.FC<AddContentBtn> = ({ add, btnstate }) => {
+const AddContentBtns: React.FC<AddContentBtn> = ({
+  add,
+  btnstate,
+  editform
+}) => {
   const nav = useNavigate();
   const cancel = () => {
     nav(-1);
@@ -18,7 +22,7 @@ const AddContentBtns: React.FC<AddContentBtn> = ({ add, btnstate }) => {
         justifyContent: "flex-end"
       }}
     >
-      <Add func={add} btnstate={btnstate} />
+      <Add func={add} btnstate={btnstate} editform={editform} />
       <Cancel func={cancel} />
     </Box>
   );

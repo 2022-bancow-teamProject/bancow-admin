@@ -1,25 +1,32 @@
-import { useEffect, useRef, useState } from "react";
-import { Container, Grid, Typography, Input } from "@mui/material";
 import { AddCircleOutline, Delete } from "@mui/icons-material";
-import AddContentBtns from "../../components/button/AddContentBtns";
+import { Container, Grid, Typography, Input, Button } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  axiosEditEventnoimg,
+  axiosEditEventwidthimg,
+  axiosGetEventDetail
+} from "../../api/event";
+import { format } from "date-fns";
 import DatePicker from "../../components/input/DatePicker";
-import { axiosAddEvent } from "../../api/event";
-import { useNavigate } from "react-router-dom";
+import AddContentBtns from "../../components/button/AddContentBtns";
 import Swal from "sweetalert2";
 
-const AddEvent = () => {
+const EditEvent = () => {
   const [datePick, setDatePick] = useState<[string | null, string | null]>([
     null,
     null
   ]);
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [url, setUrl] = useState("");
-  const [file, setFiles] = useState<File | string>();
+  const [file, setFiles] = useState<File | string>("");
+  const [status, setStatus] = useState(false);
+  const [username, setUsername] = useState("");
+  const [createdate, setCreatedate] = useState("");
 
-  const [isEmpty, setIsEmpty] = useState(true);
-
-  const inputPoster = useRef<HTMLInputElement>(null);
+  const [isEmpty, setIsEmpty] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,48 +37,15 @@ const AddEvent = () => {
     }
   }, [title, content, url, file, datePick]);
 
+  const inputPoster = useRef<HTMLInputElement>(null);
+
+  const { pathname } = useLocation();
+  const id = pathname.split("event/")[1];
+
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event?.target?.files;
     if (files) {
       setFiles(files[0]);
-    }
-  };
-
-  const addEvent = async () => {
-    const formData = new FormData();
-    formData.append("event_image", file as Blob);
-    formData.append(
-      "event_request",
-      new Blob(
-        [
-          JSON.stringify({
-            title,
-            content,
-            url,
-            start_date: datePick[0],
-            end_date: datePick[1]
-          })
-        ],
-        { type: "application/json" }
-      )
-    );
-
-    const res = await axiosAddEvent(formData);
-
-    if (res) {
-      Swal.fire(
-        "등록 완료",
-        "새로운 이벤트 등록이 완료되었습니다.",
-        "success"
-      ).then(() => {
-        navigate(-1);
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "등록 실패",
-        text: "이벤트 등록에 실패하였습니다."
-      });
     }
   };
 
@@ -81,10 +55,66 @@ const AddEvent = () => {
     }
   };
 
+  const editEvent = async () => {
+    const formData = new FormData();
+    formData.append("event_image", file as Blob);
+    formData.append(
+      "event_request",
+      new Blob(
+        [
+          JSON.stringify({
+            id,
+            title,
+            content,
+            url,
+            start_date: datePick[0],
+            end_date: datePick[1],
+            status
+          })
+        ],
+        { type: "application/json" }
+      )
+    );
+    const res = await axiosEditEventwidthimg(formData);
+
+    if (res) {
+      Swal.fire("수정 완료", "이벤트 수정이 완료되었습니다.", "success").then(
+        () => {
+          navigate(-1);
+        }
+      );
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "수정 실패",
+        text: "이벤트 수정에 실패하였습니다."
+      });
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      const data = await axiosGetEventDetail(id);
+      if (data) {
+        setTitle(data.title);
+        setContent(data.content);
+        setUrl(data.url);
+        setFiles(data.image);
+        setStatus(data.status);
+        setDatePick([data.start_date, data.end_date]);
+        setUsername(data.user_name);
+        setCreatedate(data.create_date);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log(typeof file);
+  }, [file]);
   return (
     <>
       <Typography variant="h4" component="h2">
-        Event 추가 등록
+        Event 상세 / 수정
       </Typography>
       <Container
         maxWidth="sm"
@@ -127,6 +157,31 @@ const AddEvent = () => {
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
             <DatePicker datePick={datePick} setDatePick={setDatePick} />
           </Grid>
+          <Typography variant="h6" component="h2">
+            Status
+          </Typography>
+          <Grid item xs={12} sx={{ marginBottom: 3 }}>
+            <Button
+              variant="contained"
+              color={status ? "success" : "error"}
+              sx={{
+                height: "40px",
+                width: "80px",
+                marginTop: 2,
+                marginRight: 3,
+                pointerEvents: "none"
+              }}
+            >
+              {status ? "진행중" : "마감"}
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => setStatus((curr) => !curr)}
+              sx={{ height: "40px", marginTop: 2 }}
+            >
+              변경
+            </Button>
+          </Grid>
           <Typography variant="h6" component="h2" sx={{ marginBottom: 3 }}>
             이미지
           </Typography>
@@ -147,14 +202,12 @@ const AddEvent = () => {
                 cursor: "pointer"
               }}
             >
-              {typeof file === "object" && (
-                <img src={URL.createObjectURL(file)} alt="img" />
-              )}
-              {!file && (
-                <AddCircleOutline
-                  sx={{ color: "#d3cacad7", fontSize: "36px" }}
-                />
-              )}
+              {file &&
+                (typeof file === "object" ? (
+                  <img src={URL.createObjectURL(file)} alt="img" />
+                ) : (
+                  <img src={file} alt="imgs" />
+                ))}
               {file && (
                 <Delete
                   onClick={(e) => {
@@ -167,6 +220,12 @@ const AddEvent = () => {
                     right: "10px",
                     fontSize: "28px"
                   }}
+                />
+              )}
+
+              {!file && (
+                <AddCircleOutline
+                  sx={{ color: "#d3cacad7", fontSize: "36px" }}
                 />
               )}
               <input
@@ -185,11 +244,29 @@ const AddEvent = () => {
               />
             </div>
           </Grid>
+          <Typography variant="h6" component="h2">
+            작성자
+          </Typography>
+          <Grid item xs={12} sx={{ marginBottom: 3 }}>
+            <Input value={username} fullWidth disabled />
+          </Grid>
+          <Typography variant="h6" component="h2">
+            작성일
+          </Typography>
+          <Grid item xs={12} sx={{ marginBottom: 3 }}>
+            <Input
+              disabled
+              value={
+                createdate && format(new Date(createdate), "yyyy.MM.dd HH:MM")
+              }
+              fullWidth
+            />
+          </Grid>
         </Grid>
-        <AddContentBtns add={addEvent} btnstate={isEmpty} />
+        <AddContentBtns add={editEvent} btnstate={isEmpty} editform />
       </Container>
     </>
   );
 };
 
-export default AddEvent;
+export default EditEvent;

@@ -13,6 +13,7 @@ import EditReview from "../pages/Review/EditReview";
 import Mypage from "../pages/Mypage";
 import UserList from "../pages/UserList";
 import AddEvent from "../pages/Event/AddEvent";
+import EditEvent from "../pages/Event/EditEvent";
 
 const MainArea = () => {
   return (
@@ -28,6 +29,7 @@ const MainArea = () => {
         <Route path="/news" element={<News />} />
         <Route path="/event" element={<Event />} />
         <Route path="/event/add" element={<AddEvent />} />
+        <Route path="/event/:id" element={<EditEvent />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/qna" element={<Qna />} />
         <Route path="/popup" element={<PopUp />} />

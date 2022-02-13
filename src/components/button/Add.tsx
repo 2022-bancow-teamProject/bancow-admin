@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { ChangeBtn } from "../../interfaces";
 
-const Add: React.FC<ChangeBtn> = ({ func, btnstate }) => {
+const Add: React.FC<ChangeBtn> = ({ func, btnstate, editform }) => {
   return (
     <Button
       variant="contained"
@@ -9,7 +9,7 @@ const Add: React.FC<ChangeBtn> = ({ func, btnstate }) => {
       onClick={func}
       disabled={btnstate}
     >
-      추가
+      {editform ? "수정" : "추가"}
     </Button>
   );
 };
