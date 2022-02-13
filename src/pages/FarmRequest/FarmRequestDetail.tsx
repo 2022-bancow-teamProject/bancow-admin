@@ -1,40 +1,22 @@
 import { useEffect, useState } from "react";
 import { Box, Grid, Typography, Paper } from "@mui/material";
-import GridItem from "../../components/gridtable/GTItem";
-import GTselector from "../../components/gridtable/GTselector";
 import { FarmQnaDetail, getFarmRequestDetail } from "../../api/qna";
-import { compareAsc, format } from "date-fns";
 import { styled } from "@mui/material/styles";
 import Delete from "../../components/button/Delete";
 import List from "../../components/button/List";
-import { fontWeight } from "@mui/system";
-import { Bloodtype } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
 
 const FarmRequestDetail = () => {
-  const [isDelete, setIsDelete] = useState(false);
-  const [checked, setChecked] = useState<number[]>([]);
+  const { id } = useParams();
   const [data, setData] = useState<FarmQnaDetail>();
+
   useEffect(() => {
     (async () => {
-      const data = await getFarmRequestDetail(1);
+      const data = await getFarmRequestDetail(id);
       setData(data);
     })();
     console.log(data?.data.availableDate);
   }, []);
-
-  const handleCheck = (value: number) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      // 선택됨 목록에 없으면
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
 
   const HeaderItem = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -125,49 +107,6 @@ const FarmRequestDetail = () => {
           <Item>{data?.data.availableDate}</Item>
         </Grid>
       </Grid>
-      {/* {data?.data.content.map((item) => (
-        <Grid
-          key={item.id}
-          container
-          sx={{ height: "40px", marginTop: 0.4, backgroundColor: "#e8e8e8" }}
-        >
-          {isDelete ? (
-            <Grid item xs={1} sx={{ textAlign: "center" }}>
-              <Checkbox
-                onClick={handleCheck(item.id)}
-                checked={checked.indexOf(item.id) !== -1}
-                tabIndex={-1}
-                disableRipple
-              />
-            </Grid>
-          ) : (
-            <GridItem onClick={selectRequest} das={1}>
-              {item.id}
-            </GridItem>
-          )}
-          <GridItem das={2}>{item.farmName}</GridItem>
-          <GridItem das={1}>{item.farmQnaName}</GridItem>
-          <GridItem das={6} id={item.id}>
-            {item.checked ? "O" : "X"}
-          </GridItem>
-          <GridItem das={2}>
-            {format(new Date(item.createDate), "yyyy-MM-dd")}
-          </GridItem>
-        </Grid>
-      ))} */}
-      {/* <Pagination
-        count={data?.data.totalPages}
-        onChange={(event, page) => pageNation(page - 1)}
-        color="primary"
-        size="large"
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          position: "absolute",
-          bottom: 80
-        }}
-      /> */}
     </Box>
   );
 };

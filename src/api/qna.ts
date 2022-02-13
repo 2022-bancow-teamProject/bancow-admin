@@ -61,7 +61,7 @@ export const getFarmRequest = async (page: number) => {
   }
 };
 
-export const getFarmRequestDetail = async (id: number) => {
+export const getFarmRequestDetail = async (id: string | undefined) => {
   const token = sessionStorage.getItem("token");
   const headers = {
     token: `${token}`,
