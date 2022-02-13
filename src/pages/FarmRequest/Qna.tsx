@@ -7,7 +7,7 @@ import {
   deleteFarmRequest,
   FarmQnaResponse,
   getFarmRequest
-} from "../../api/qna";
+} from "../../api/qna";
 import { format } from "date-fns";
 
 const Qna = () => {
@@ -59,7 +59,6 @@ const Qna = () => {
       <GTselector
         isDelete={isDelete}
         setIsDelete={setIsDelete}
-        checked={checked}
         setChecked={setChecked}
       />
       <GTHeader>

@@ -1,24 +1,70 @@
 import { useEffect, useState } from "react";
-import { Grid, Box, Typography, Pagination } from "@mui/material";
+import { Grid, Box, Typography, Pagination, Checkbox } from "@mui/material";
 import GTHeader from "../../components/gridtable/GTHeader";
 import GridItem from "../../components/gridtable/GTItem";
 import GTselector from "../../components/gridtable/GTselector";
-import { axiosGetAllEvent, Ievent } from "../../api/event";
+import {
+  axiosGetAllEvent,
+  axiosRemoveEvents,
+  axiosRemoveOneEvent,
+  Ievent
+} from "../../api/event";
 import { format } from "date-fns";
+import Swal from "sweetalert2";
 
 const Event = () => {
   const [isDelete, setIsDelete] = useState(false);
   const [checked, setChecked] = useState<number[]>([]);
 
+  const [currpage, setCurrpage] = useState(0);
   const [totalpage, setTotalpage] = useState(0);
 
   const [eventlist, setEventlist] = useState<Ievent[]>([]);
 
+  const handleCheck = (value: number) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    // 목록에 없으면
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
+
   const pageNation = async (page: number) => {
     const data = await axiosGetAllEvent(page);
     if (data) {
+      setCurrpage(page);
       setEventlist(data.content);
       setTotalpage(data.totalPages);
+    }
+  };
+
+  const deleteEvent = async () => {
+    if (!checked.length) return;
+    let res;
+    if (1 === checked.length) {
+      res = await axiosRemoveOneEvent(checked[0]);
+    } else {
+      res = await axiosRemoveEvents(checked);
+    }
+    if (res) {
+      Swal.fire("삭제 완료", "이벤트 삭제가 완료되었습니다.", "success");
+      const data = await axiosGetAllEvent(currpage);
+      if (data) {
+        setEventlist(data.content);
+        setTotalpage(data.totalPages);
+      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "삭제 실패",
+        text: "이벤트 삭제를 실패하였습니다."
+      });
     }
   };
 
@@ -40,8 +86,8 @@ const Event = () => {
       <GTselector
         isDelete={isDelete}
         setIsDelete={setIsDelete}
-        checked={checked}
         setChecked={setChecked}
+        delfunc={deleteEvent}
       />
       <GTHeader>
         <GridItem das={1}>ID</GridItem>
@@ -61,7 +107,18 @@ const Event = () => {
             backgroundColor: "#e8e8e8"
           }}
         >
-          <GridItem das={1}>{item.id}</GridItem>
+          {isDelete ? (
+            <Grid item xs={1} sx={{ textAlign: "center" }}>
+              <Checkbox
+                onClick={handleCheck(item.id)}
+                checked={checked.indexOf(item.id) !== -1}
+                tabIndex={-1}
+                disableRipple
+              />
+            </Grid>
+          ) : (
+            <GridItem das={1}>{item.id}</GridItem>
+          )}
           <GridItem das={4} id={item.id}>
             {item.title}
           </GridItem>

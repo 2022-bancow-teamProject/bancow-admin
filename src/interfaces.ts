@@ -7,9 +7,9 @@ export interface MenuProps {
 
 export interface GTSelectorProps {
   isDelete: boolean;
-  checked: number[];
   setIsDelete: Dispatch<SetStateAction<boolean>>;
   setChecked: Dispatch<SetStateAction<number[]>>;
+  delfunc?: (e?: any) => Promise<void> | void;
 }
 
 export interface GTHeaderProps {
