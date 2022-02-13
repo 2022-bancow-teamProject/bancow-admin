@@ -30,7 +30,7 @@ const EditEvent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (title && content && url && file && datePick[0] && datePick[1]) {
+    if (title && content && url && datePick[0] && datePick[1]) {
       setIsEmpty(false);
     } else {
       setIsEmpty(true);
@@ -56,27 +56,39 @@ const EditEvent = () => {
   };
 
   const editEvent = async () => {
-    const formData = new FormData();
-    formData.append("event_image", file as Blob);
-    formData.append(
-      "event_request",
-      new Blob(
-        [
-          JSON.stringify({
-            id,
-            title,
-            content,
-            url,
-            start_date: datePick[0],
-            end_date: datePick[1],
-            status
-          })
-        ],
-        { type: "application/json" }
-      )
-    );
-    const res = await axiosEditEventwidthimg(formData);
-
+    let res;
+    if (file) {
+      const formData = new FormData();
+      formData.append(
+        "event_request",
+        new Blob(
+          [
+            JSON.stringify({
+              id: +id,
+              title,
+              content,
+              url,
+              start_date: datePick[0],
+              end_date: datePick[1],
+              status
+            })
+          ],
+          { type: "application/json" }
+        )
+      );
+      formData.append("event_image", file as Blob);
+      res = await axiosEditEventwidthimg(formData);
+    } else {
+      res = await axiosEditEventnoimg({
+        id: +id,
+        title,
+        content,
+        url,
+        start_date: `${datePick[0]}`,
+        end_date: `${datePick[1]}`,
+        status
+      });
+    }
     if (res) {
       Swal.fire("수정 완료", "이벤트 수정이 완료되었습니다.", "success").then(
         () => {
@@ -87,7 +99,7 @@ const EditEvent = () => {
       Swal.fire({
         icon: "error",
         title: "수정 실패",
-        text: "이벤트 수정에 실패하였습니다."
+        text: "이벤트 수정이 실패하였습니다."
       });
     }
   };

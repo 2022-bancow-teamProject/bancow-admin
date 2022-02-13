@@ -130,7 +130,7 @@ export const axiosEditEventwidthimg = async (formData: FormData) => {
 };
 
 interface Inoimg {
-  id: string;
+  id: number;
   title: string;
   content: string;
   url: string;
@@ -143,7 +143,7 @@ interface Inoimg {
 export const axiosEditEventnoimg = async (datas: Inoimg) => {
   try {
     const token = sessionStorage.getItem("token");
-    const { data } = await axios.post<defaultResponse>(
+    const { data } = await axios.patch<defaultResponse>(
       `${baseApi}event/edit`,
       datas,
       {
