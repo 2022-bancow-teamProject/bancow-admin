@@ -4,9 +4,10 @@ import { FarmQnaDetail, getFarmRequestDetail } from "../../api/qna";
 import { styled } from "@mui/material/styles";
 import Delete from "../../components/button/Delete";
 import List from "../../components/button/List";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FarmRequestDetail = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState<FarmQnaDetail>();
 
@@ -54,7 +55,7 @@ const FarmRequestDetail = () => {
           marginBottom: 8
         }}
       >
-        <List></List>
+        <List func={() => navigate("/manager/admin/qna")}></List>
         <Delete></Delete>
       </Box>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
