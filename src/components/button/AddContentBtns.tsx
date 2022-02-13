@@ -1,9 +1,10 @@
 import { Box } from "@mui/system";
 import { useNavigate } from "react-router-dom";
+import { AddContentBtn } from "../../interfaces";
 import Add from "./Add";
 import Cancel from "./Cancel";
 
-const AddContentBtns = () => {
+const AddContentBtns: React.FC<AddContentBtn> = ({ add, btnstate }) => {
   const nav = useNavigate();
   const cancel = () => {
     nav(-1);
@@ -17,7 +18,7 @@ const AddContentBtns = () => {
         justifyContent: "flex-end"
       }}
     >
-      <Add />
+      <Add func={add} btnstate={btnstate} />
       <Cancel func={cancel} />
     </Box>
   );
