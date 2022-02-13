@@ -3,7 +3,7 @@ import { Box, Checkbox, Grid, Pagination, Typography } from "@mui/material";
 import GridItem from "../components/gridtable/GTItem";
 import GTselector from "../components/gridtable/GTselector";
 import GTHeader from "../components/gridtable/GTHeader";
-import { getFarmRequest } from "../api/qna";
+import { getFarmRequest } from "../api/qna";
 
 const data = [
   {
@@ -59,7 +59,6 @@ const Faq = () => {
       <GTselector
         isDelete={isDelete}
         setIsDelete={setIsDelete}
-        checked={checked}
         setChecked={setChecked}
       />
       <GTHeader>

@@ -34,7 +34,6 @@ const UserList = () => {
       showCancelButton: true
     });
     if (result.isConfirmed) {
-      console.log("dddd");
       const res = await axiosChangeAuthority(id);
       if (res) {
         return pageNation(currpage);

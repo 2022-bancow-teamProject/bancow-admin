@@ -92,7 +92,6 @@ const PopUp = () => {
       <GTselector
         isDelete={isDelete}
         setIsDelete={setIsDelete}
-        checked={checked}
         setChecked={setChecked}
       />
     </Container>

@@ -57,7 +57,6 @@ const Review = () => {
       <GTselector
         isDelete={isDelete}
         setIsDelete={setIsDelete}
-        checked={checked}
         setChecked={setChecked}
       />
       <GTHeader>

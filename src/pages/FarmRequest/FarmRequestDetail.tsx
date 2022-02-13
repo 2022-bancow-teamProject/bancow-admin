@@ -4,7 +4,7 @@ import {
   deleteFarmRequestDetail,
   FarmQnaDetail,
   getFarmRequestDetail
-} from "../../api/qna";
+} from "../../api/qna";
 import { styled } from "@mui/material/styles";
 import Delete from "../../components/button/Delete";
 import List from "../../components/button/List";

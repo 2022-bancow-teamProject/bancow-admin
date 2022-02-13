@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { delOnePopupRequest } from "../../api/popup";
 import { Box } from "@mui/material";
 import { GTSelectorProps } from "../../interfaces";
 import Add from "../button/Add";
@@ -10,8 +9,8 @@ import Select from "../button/Select";
 const GTselector: React.FC<GTSelectorProps> = ({
   isDelete,
   setIsDelete,
-  checked,
-  setChecked
+  setChecked,
+  delfunc
 }) => {
   const nav = useNavigate();
 
@@ -19,7 +18,14 @@ const GTselector: React.FC<GTSelectorProps> = ({
     setIsDelete((curr) => !curr);
     setChecked([]);
   };
-  // 삭제 버튼에 대한 함수 필요 with api
+
+  const deleteAction = () => {
+    if (delfunc) {
+      delfunc();
+    }
+    setIsDelete((curr) => !curr);
+    setChecked([]);
+  };
 
   const moveAddpage = () => {
     nav("add");
@@ -35,8 +41,8 @@ const GTselector: React.FC<GTSelectorProps> = ({
       }}
     >
       <Add func={moveAddpage} />
-      {isDelete && <Delete func={toggleHandler} />}
-      {checked ? (
+      {isDelete && <Delete func={deleteAction} />}
+      {isDelete ? (
         <Cancel func={toggleHandler} />
       ) : (
         <Select func={toggleHandler} />

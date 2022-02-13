@@ -161,3 +161,50 @@ export const axiosEditEventnoimg = async (datas: Inoimg) => {
     }
   }
 };
+
+// 단일 이벤트 삭제
+export const axiosRemoveOneEvent = async (id: number) => {
+  try {
+    const token = sessionStorage.getItem("token");
+    const { data } = await axios.delete<defaultResponse>(
+      `${baseApi}event/${id}`,
+      {
+        headers: {
+          TOKEN: `${token}`,
+          Accept: "application/json"
+        }
+      }
+    );
+    return data.data.result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return false;
+    } else {
+      throw new Error("different error than axios");
+    }
+  }
+};
+
+// 복수 이벤트 삭제
+export const axiosRemoveEvents = async (id: number[]) => {
+  try {
+    const token = sessionStorage.getItem("token");
+    const { data } = await axios.delete<defaultResponse>(
+      `${baseApi}event/delete`,
+      {
+        headers: {
+          TOKEN: `${token}`,
+          Accept: "application/json"
+        },
+        data: { id }
+      }
+    );
+    return data.data.result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return false;
+    } else {
+      throw new Error("different error than axios");
+    }
+  }
+};
