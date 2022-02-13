@@ -12,36 +12,7 @@ const Event = () => {
   const [checked, setChecked] = useState<number[]>([]);
 
   const [userlist, setUserlist] = useState<Imanager[]>([]);
-  const [file, setFiles] = useState<File>();
 
-  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event?.target?.files;
-    if (files) {
-      setFiles(files[0]);
-    }
-  };
-
-  const testapi = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append("event_image", file as Blob);
-    formData.append(
-      "event_request",
-      new Blob(
-        [
-          JSON.stringify({
-            title: "test입니다",
-            start_date: "2023-01-01",
-            end_date: "2025-01-01"
-          })
-        ],
-        { type: "application/json" }
-      )
-    );
-
-    const res = await axiosAddEvent(formData);
-    console.log(res);
-  };
   useEffect(() => {
     (async () => {
       const res = await axiostest();
@@ -84,10 +55,6 @@ const Event = () => {
           <GridItem das={2}>{item.managerStatus}</GridItem>
         </Grid>
       ))}
-      <form encType="multipart/form-data" onSubmit={testapi}>
-        <input type="file" name="photo" onChange={handleUpload} />
-        <button type="submit">fsfasfsa</button>
-      </form>
       {/* <Pagination
         count={totalpage}
         onChange={(event, page) => pageNation(page - 1)}

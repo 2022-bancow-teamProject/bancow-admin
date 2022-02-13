@@ -31,7 +31,13 @@ export interface GridItemProps {
 }
 
 export interface ChangeBtn {
-  [func: string]: Dispatch<any>;
+  btnstate?: boolean;
+  func?: Dispatch<any>;
+}
+
+export interface AddContentBtn {
+  btnstate?: boolean;
+  add?: (e?: any) => Promise<void>;
 }
 
 export interface DatePickerProps {
