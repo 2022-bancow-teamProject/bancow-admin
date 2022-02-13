@@ -1,103 +1,104 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getPopupRequest, getPopupResponse } from "../../api/popup";
 import Container from "@mui/material/Container";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import Stack from "@mui/material/Stack";
-
-const columns: GridColDef[] = [
-  { field: "id", headerName: "번호", width: 70 },
-  { field: "title", headerName: "제목", width: 400 },
-  { field: "start_date", headerName: "생성일", width: 150 },
-  { field: "end_date", headerName: "마감일", width: 150 }
-];
-
-const rows = [
-  {
-    id: 1,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  },
-  {
-    id: 2,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  },
-  {
-    id: 3,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  },
-  {
-    id: 4,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  },
-  {
-    id: 5,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  },
-  {
-    id: 6,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  },
-  {
-    id: 7,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  },
-  {
-    id: 8,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  },
-  {
-    id: 9,
-    title: "내 소의 출하 일정과 등급 판정 결과 확인",
-    start_date: "2019-01-12",
-    end_date: "2019-01-13"
-  }
-];
+import { Box, Checkbox, Grid, Pagination, Typography } from "@mui/material";
+import GridItem from "../../components/gridtable/GTItem";
+import GTselector from "../../components/gridtable/GTselector";
+import GTHeader from "../../components/gridtable/GTHeader";
 
 const PopUp = () => {
+  const [isDelete, setIsDelete] = useState(false);
+  const [checked, setChecked] = useState<number[]>([]);
+  const [data, setData] = useState<getPopupResponse>();
+
+  useEffect(() => {
+    (async () => {
+      const data = await getPopupRequest(0);
+      setData(data);
+    })();
+  }, []);
+
+  const pageNation = async (page: number) => {
+    const data = await getPopupRequest(page);
+    if (data) {
+      setData(data);
+    }
+  };
+
+  const handleCheck = (value: number) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      // 선택됨 목록에 없으면
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
+
+  const selectRequest = () => {
+    console.log("y");
+  };
+
   return (
     <Container component="main">
-      <h1>팝업</h1>
-      <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
+      <Box sx={{ height: "100%", position: "relative" }}>
+        <Typography variant="h4" component="h2">
+          팝업 목록
+        </Typography>
+        <GTHeader>
+          <GridItem das={1}>번호</GridItem>
+          <GridItem das={6}>제목</GridItem>
+          <GridItem das={2}>생성일</GridItem>
+          <GridItem das={2}>마감일</GridItem>
+        </GTHeader>
+
+        {data?.data.content.map((item) => (
+          <Grid
+            key={item.id}
+            container
+            sx={{ height: "40px", marginTop: 0.4, backgroundColor: "#e8e8e8" }}
+          >
+            {isDelete ? (
+              <Grid item xs={1} sx={{ textAlign: "center" }}>
+                <Checkbox
+                  onClick={handleCheck(item.id)}
+                  checked={checked.indexOf(item.id) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                />
+              </Grid>
+            ) : (
+              <GridItem das={1}>{item.id + 1}</GridItem>
+            )}
+            <GridItem das={6}>{item.title}</GridItem>
+            <GridItem das={2}>{item.start_date}</GridItem>
+            <GridItem das={2}>{item.end_date}</GridItem>
+          </Grid>
+        ))}
+        <Pagination
+          count={data?.data.totalPages}
+          onChange={(event, page) => pageNation(page - 1)}
+          color="primary"
+          size="large"
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            position: "absolute",
+            bottom: "-60px"
+          }}
         />
-      </div>
-      <div style={{ float: "right", marginTop: "40px" }}>
-        <Stack direction="row" spacing={2}>
-          <Button variant="outlined" startIcon={<DeleteIcon />}>
-            삭제
-          </Button>
-          <Button variant="contained" endIcon={<AddIcon />}>
-            <Link
-              to="/manager/admin/popup/add"
-              style={{ textDecoration: "none", color: "#fff" }}
-            >
-              추가
-            </Link>
-          </Button>
-        </Stack>
-      </div>
+      </Box>
+      <GTselector
+        isDelete={isDelete}
+        setIsDelete={setIsDelete}
+        checked={checked}
+        setChecked={setChecked}
+      />
     </Container>
   );
 };
