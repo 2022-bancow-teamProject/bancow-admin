@@ -21,6 +21,10 @@ interface FarmQna {
   createDate: string;
 }
 
+export interface DeleteFarmRequest {
+  id: number[];
+}
+
 export interface FarmQnaDetail {
   data: {
     id: number;
@@ -57,9 +61,30 @@ export const getFarmRequest = async (page: number) => {
       `${baseApi}farmqna?page=${page}`,
       { headers }
     );
-    console.log(data);
-    console.log(token);
     return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message);
+    } else {
+      throw new Error("different error than axios");
+    }
+  }
+};
+
+export const deleteFarmRequest = async (
+  deleteFarmRequest: DeleteFarmRequest
+) => {
+  const token = sessionStorage.getItem("token");
+  const headers = {
+    token: `${token}`,
+    accept: "application/json"
+  };
+
+  try {
+    return await axios.delete<FarmQnaDetailResponse>(
+      `${baseApi}farmqna/delete`,
+      { data: deleteFarmRequest, headers }
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.message);

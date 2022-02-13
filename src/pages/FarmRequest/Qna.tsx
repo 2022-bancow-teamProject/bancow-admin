@@ -3,8 +3,12 @@ import { Box, Checkbox, Grid, Pagination, Typography } from "@mui/material";
 import GridItem from "../../components/gridtable/GTItem";
 import GTselector from "../../components/gridtable/GTselector";
 import GTHeader from "../../components/gridtable/GTHeader";
-import { FarmQnaResponse, getFarmRequest } from "../../api/qna";
-import { compareAsc, format } from "date-fns";
+import {
+  deleteFarmRequest,
+  FarmQnaResponse,
+  getFarmRequest
+} from "../../api/qna";
+import { format } from "date-fns";
 
 const Qna = () => {
   const [isDelete, setIsDelete] = useState(false);
@@ -16,12 +20,14 @@ const Qna = () => {
       setData(data);
     })();
   }, []);
+
   const pageNation = async (page: number) => {
     const data = await getFarmRequest(page);
     if (data) {
       setData(data);
     }
   };
+
   const handleCheck = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -35,9 +41,16 @@ const Qna = () => {
 
     setChecked(newChecked);
   };
+
   const selectRequest = () => {
     console.log("k");
   };
+
+  // QNA 목록 선택 삭제
+  const deleteQna = async () => {
+    await deleteFarmRequest({ id: checked });
+  };
+
   return (
     <Box sx={{ height: "100%", position: "relative" }}>
       <Typography variant="h4" component="h2">
