@@ -55,7 +55,7 @@ const LeftGNB: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
         <Collapse in={isDrop} timeout="auto" unmountOnExit>
           <List component="div" disablePadding sx={{ pl: 4 }}>
             <MenuItem title="구매자 리뷰" path="review"></MenuItem>
-            <MenuItem title="농가 소개 정보" path="farmer"></MenuItem>
+            <MenuItem title="농가 정보" path="farmer"></MenuItem>
             <MenuItem title="공지" path="notice"></MenuItem>
             <MenuItem title="언론 보도" path="news"></MenuItem>
             <MenuItem title="이벤트" path="event"></MenuItem>

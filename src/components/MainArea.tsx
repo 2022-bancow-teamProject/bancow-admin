@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import IntroPage from "../pages/IntroPage";
 import Review from "../pages/Review/Review";
-import Farmer from "../pages/Farmer";
+import Farmer from "../pages/Farmer/Farmer";
 import Notice from "../pages/Notice";
 import News from "../pages/News";
 import Event from "../pages/Event/Event";
@@ -16,6 +16,8 @@ import UserList from "../pages/UserList";
 import FarmRequestDetail from "../pages/FarmRequest/FarmRequestDetail";
 import AddEvent from "../pages/Event/AddEvent";
 import EditEvent from "../pages/Event/EditEvent";
+import EditFarmer from "../pages/Farmer/EditFarmer";
+import AddFarmer from "../pages/Farmer/AddFarmer";
 
 const MainArea = () => {
   return (
@@ -27,6 +29,8 @@ const MainArea = () => {
         <Route path="/review/add" element={<AddReview />} />
         <Route path="/review/:id" element={<EditReview />} />
         <Route path="/farmer" element={<Farmer />} />
+        <Route path="/farmer/add" element={<AddFarmer />} />
+        <Route path="/farmer/:id" element={<EditFarmer />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/news" element={<News />} />
         <Route path="/event" element={<Event />} />
