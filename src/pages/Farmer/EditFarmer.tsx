@@ -3,26 +3,22 @@ import { Container, Grid, Typography, Input, Button } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  axiosEditEventnoimg,
-  axiosEditEventwidthimg,
-  axiosGetEventDetail
-} from "../../api/event";
+  axiosEditFarmnoimg,
+  axiosEditFarmwidthimg,
+  axiosGetFarmDetail
+} from "../../api/farm";
 import { format } from "date-fns";
-import DatePicker from "../../components/input/DatePicker";
 import AddContentBtns from "../../components/button/AddContentBtns";
 import Swal from "sweetalert2";
 
-const EditEvent = () => {
-  const [datePick, setDatePick] = useState<[string | null, string | null]>([
-    null,
-    null
-  ]);
-
+const EditFarmer = () => {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [url, setUrl] = useState("");
-  const [file, setFiles] = useState<File | string>("");
   const [status, setStatus] = useState(false);
+  const [farm_name, setFarmname] = useState("");
+  const [ceo_name, setCeoname] = useState("");
+  const [content, setContent] = useState("");
+  const [filefarm, setFilesfarm] = useState<File | string>("");
+  const [fileceo, setFilesceo] = useState<File | string>("");
   const [username, setUsername] = useState("");
   const [createdate, setCreatedate] = useState("");
 
@@ -30,99 +26,115 @@ const EditEvent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (title && content && url && datePick[0] && datePick[1]) {
+    if (title && farm_name && ceo_name && content) {
       setIsEmpty(false);
     } else {
       setIsEmpty(true);
     }
-  }, [title, content, url, file, datePick]);
+  }, [title, farm_name, ceo_name, content]);
 
-  const inputPoster = useRef<HTMLInputElement>(null);
+  const inputfarm = useRef<HTMLInputElement>(null);
+  const inputceo = useRef<HTMLInputElement>(null);
 
   const { pathname } = useLocation();
-  const id = pathname.split("event/")[1];
+  const id = pathname.split("farmer/")[1];
 
-  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload1 = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event?.target?.files;
     if (files) {
-      setFiles(files[0]);
+      setFilesfarm(files[0]);
+    }
+  };
+  const handleUpload2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event?.target?.files;
+    if (files) {
+      setFilesceo(files[0]);
     }
   };
 
-  const triggerInput = () => {
-    if (inputPoster.current) {
-      inputPoster.current.dispatchEvent(new MouseEvent("click"));
+  const triggerInputfram = () => {
+    if (inputfarm.current) {
+      inputfarm.current.dispatchEvent(new MouseEvent("click"));
+    }
+  };
+  const triggerInputceo = () => {
+    if (inputceo.current) {
+      inputceo.current.dispatchEvent(new MouseEvent("click"));
     }
   };
 
-  const editEvent = async () => {
+  const editInfo = async () => {
     let res;
-    if (file) {
+    if (filefarm && fileceo) {
       const formData = new FormData();
+      formData.append("farm_image", filefarm as Blob);
+      formData.append("farm_ceo_image", fileceo as Blob);
       formData.append(
-        "event_request",
+        "farm_request",
         new Blob(
           [
             JSON.stringify({
               id: +id,
+              farm_name,
+              ceo_name,
               title,
               content,
-              url,
-              start_date: datePick[0],
-              end_date: datePick[1],
               status
             })
           ],
           { type: "application/json" }
         )
       );
-      formData.append("event_image", file as Blob);
-      res = await axiosEditEventwidthimg(formData);
+
+      res = await axiosEditFarmwidthimg(formData);
     } else {
-      res = await axiosEditEventnoimg({
+      res = await axiosEditFarmnoimg({
         id: +id,
+        farm_name,
+        ceo_name,
         title,
         content,
-        url,
-        start_date: `${datePick[0]}`,
-        end_date: `${datePick[1]}`,
         status
       });
     }
     if (res) {
-      Swal.fire("수정 완료", "이벤트 수정이 완료되었습니다.", "success").then(
-        () => {
-          navigate(-1);
-        }
-      );
+      Swal.fire(
+        "수정 완료",
+        "농가 정보 수정이 완료되었습니다.",
+        "success"
+      ).then(() => {
+        navigate(-1);
+      });
     } else {
       Swal.fire({
         icon: "error",
         title: "수정 실패",
-        text: "이벤트 수정이 실패하였습니다."
+        text: "농가정보 수정이 실패하였습니다."
       });
     }
   };
 
   useEffect(() => {
     (async () => {
-      const data = await axiosGetEventDetail(id);
+      const data = await axiosGetFarmDetail(id);
       if (data) {
         setTitle(data.title);
         setContent(data.content);
-        setUrl(data.url);
-        setFiles(data.image);
+        setFarmname(data.farm_name);
+        setCeoname(data.ceo_name);
         setStatus(data.status);
-        setDatePick([data.start_date, data.end_date]);
         setUsername(data.user_name);
         setCreatedate(data.create_date);
+        setFilesfarm(data.farm_image);
+        setFilesceo(data.farm_ceo_image);
       }
     })();
   }, []);
+
   return (
     <>
       <Typography variant="h4" component="h2">
-        Event 상세 / 수정
+        농가 정보 상세 / 수정
       </Typography>
       <Container
         maxWidth="sm"
@@ -140,17 +152,7 @@ const EditEvent = () => {
             />
           </Grid>
           <Typography variant="h6" component="h2">
-            URL
-          </Typography>
-          <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <Input
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              fullWidth
-            />
-          </Grid>
-          <Typography variant="h6" component="h2">
-            내용
+            소개 내용
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
             <Input
@@ -159,12 +161,27 @@ const EditEvent = () => {
               fullWidth
             />
           </Grid>
-          <Typography variant="h6" component="h2" sx={{ marginBottom: 3 }}>
-            일정
+          <Typography variant="h6" component="h2">
+            농가 이름
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <DatePicker datePick={datePick} setDatePick={setDatePick} />
+            <Input
+              value={farm_name}
+              onChange={(e) => setFarmname(e.target.value)}
+              fullWidth
+            />
           </Grid>
+          <Typography variant="h6" component="h2">
+            농장주 이름
+          </Typography>
+          <Grid item xs={12} sx={{ marginBottom: 3 }}>
+            <Input
+              value={ceo_name}
+              onChange={(e) => setCeoname(e.target.value)}
+              fullWidth
+            />
+          </Grid>
+
           <Typography variant="h6" component="h2">
             Status
           </Typography>
@@ -174,13 +191,13 @@ const EditEvent = () => {
               color={status ? "success" : "error"}
               sx={{
                 height: "40px",
-                width: "80px",
+                width: "120px",
                 marginTop: 2,
                 marginRight: 3,
                 pointerEvents: "none"
               }}
             >
-              {status ? "진행중" : "마감"}
+              {status ? "입점 완료" : "미완료"}
             </Button>
             <Button
               variant="outlined"
@@ -191,11 +208,11 @@ const EditEvent = () => {
             </Button>
           </Grid>
           <Typography variant="h6" component="h2" sx={{ marginBottom: 3 }}>
-            이미지
+            농장 이미지
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
             <div
-              onClick={triggerInput}
+              onClick={triggerInputfram}
               style={{
                 width: "100%",
                 height: "300px",
@@ -210,17 +227,17 @@ const EditEvent = () => {
                 cursor: "pointer"
               }}
             >
-              {file &&
-                (typeof file === "object" ? (
-                  <img src={URL.createObjectURL(file)} alt="img" />
+              {filefarm &&
+                (typeof filefarm === "object" ? (
+                  <img src={URL.createObjectURL(filefarm)} alt="img" />
                 ) : (
-                  <img src={file} alt="imgs" />
+                  <img src={filefarm} alt="imgs" />
                 ))}
-              {file && (
+              {filefarm && (
                 <Delete
                   onClick={(e) => {
                     e.stopPropagation();
-                    setFiles("");
+                    setFilesfarm("");
                   }}
                   sx={{
                     position: "absolute",
@@ -231,7 +248,7 @@ const EditEvent = () => {
                 />
               )}
 
-              {!file && (
+              {!filefarm && (
                 <AddCircleOutline
                   sx={{ color: "#d3cacad7", fontSize: "36px" }}
                 />
@@ -247,8 +264,70 @@ const EditEvent = () => {
                   overflow: "hidden",
                   border: "0"
                 }}
-                ref={inputPoster}
-                onChange={handleUpload}
+                ref={inputfarm}
+                onChange={handleUpload1}
+              />
+            </div>
+          </Grid>
+          <Typography variant="h6" component="h2" sx={{ marginBottom: 3 }}>
+            농장주 이미지
+          </Typography>
+          <Grid item xs={12} sx={{ marginBottom: 3 }}>
+            <div
+              onClick={triggerInputceo}
+              style={{
+                width: "100%",
+                height: "300px",
+                marginBottom: "30px",
+                borderRadius: "8px",
+                border: "2px solid #e8e8e8",
+                position: "relative",
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer"
+              }}
+            >
+              {fileceo &&
+                (typeof fileceo === "object" ? (
+                  <img src={URL.createObjectURL(fileceo)} alt="img" />
+                ) : (
+                  <img src={fileceo} alt="imgs" />
+                ))}
+              {fileceo && (
+                <Delete
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFilesceo("");
+                  }}
+                  sx={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    fontSize: "28px"
+                  }}
+                />
+              )}
+
+              {!fileceo && (
+                <AddCircleOutline
+                  sx={{ color: "#d3cacad7", fontSize: "36px" }}
+                />
+              )}
+              <input
+                type="file"
+                accept="image/png"
+                style={{
+                  position: "absolute",
+                  width: "0",
+                  height: "0",
+                  padding: "0",
+                  overflow: "hidden",
+                  border: "0"
+                }}
+                ref={inputceo}
+                onChange={handleUpload2}
               />
             </div>
           </Grid>
@@ -271,10 +350,10 @@ const EditEvent = () => {
             />
           </Grid>
         </Grid>
-        <AddContentBtns add={editEvent} btnstate={isEmpty} editform />
+        <AddContentBtns add={editInfo} btnstate={isEmpty} editform />
       </Container>
     </>
   );
 };
 
-export default EditEvent;
+export default EditFarmer;
