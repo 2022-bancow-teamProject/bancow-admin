@@ -89,11 +89,11 @@ const Farmer = () => {
       />
       <GTHeader>
         <GridItem das={1}>ID</GridItem>
-        <GridItem das={2}>Farm name</GridItem>
-        <GridItem das={2}>Ceo name</GridItem>
-        <GridItem das={4}>Title</GridItem>
-        <GridItem das={1}>Status</GridItem>
-        <GridItem das={2}>Create date</GridItem>
+        <GridItem das={2}>농장 이름</GridItem>
+        <GridItem das={2}>농장주</GridItem>
+        <GridItem das={4}>제목</GridItem>
+        <GridItem das={1}>상태</GridItem>
+        <GridItem das={2}>생성일</GridItem>
       </GTHeader>
       {list.map((item) => (
         <Grid

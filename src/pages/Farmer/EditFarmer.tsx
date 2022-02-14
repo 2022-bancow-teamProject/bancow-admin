@@ -1,5 +1,12 @@
 import { AddCircleOutline, Delete } from "@mui/icons-material";
-import { Container, Grid, Typography, Input, Button } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Input,
+  Button,
+  TextareaAutosize
+} from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -155,10 +162,10 @@ const EditFarmer = () => {
             소개 내용
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <Input
+            <TextareaAutosize
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              fullWidth
+              style={{ width: "100%" }}
             />
           </Grid>
           <Typography variant="h6" component="h2">
@@ -183,7 +190,7 @@ const EditFarmer = () => {
           </Grid>
 
           <Typography variant="h6" component="h2">
-            Status
+            상태
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
             <Button
@@ -229,9 +236,17 @@ const EditFarmer = () => {
             >
               {filefarm &&
                 (typeof filefarm === "object" ? (
-                  <img src={URL.createObjectURL(filefarm)} alt="img" />
+                  <img
+                    src={URL.createObjectURL(filefarm)}
+                    alt="img"
+                    style={{ display: "block", height: "300px" }}
+                  />
                 ) : (
-                  <img src={filefarm} alt="imgs" />
+                  <img
+                    src={filefarm}
+                    alt="imgs"
+                    style={{ display: "block", height: "300px" }}
+                  />
                 ))}
               {filefarm && (
                 <Delete
@@ -291,9 +306,17 @@ const EditFarmer = () => {
             >
               {fileceo &&
                 (typeof fileceo === "object" ? (
-                  <img src={URL.createObjectURL(fileceo)} alt="img" />
+                  <img
+                    src={URL.createObjectURL(fileceo)}
+                    alt="img"
+                    style={{ display: "block", height: "300px" }}
+                  />
                 ) : (
-                  <img src={fileceo} alt="imgs" />
+                  <img
+                    src={fileceo}
+                    alt="imgs"
+                    style={{ display: "block", height: "300px" }}
+                  />
                 ))}
               {fileceo && (
                 <Delete
