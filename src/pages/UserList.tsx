@@ -87,10 +87,11 @@ const UserList = () => {
           <GridItem das={2}>{item.username}</GridItem>
           <GridItem das={2}>{item.managerStatus}</GridItem>
           <GridItem das={2}>
-            {format(new Date(item.createDate), "yyyy.MM.dd")}
+            {item.createDate && format(new Date(item.createDate), "yyyy.MM.dd")}
           </GridItem>
           <GridItem das={2}>
-            {format(new Date(item.updateDate), "yyyy.MM.dd HH:MM")}
+            {item.createDate &&
+              format(new Date(item.updateDate), "yyyy.MM.dd HH:MM")}
           </GridItem>
         </Grid>
       ))}
