@@ -9,8 +9,7 @@ import Faq from "../pages/Faq";
 import Popup from "../pages/Popup/Popup";
 import AddPopup from "../pages/Popup/AddPopup";
 import Qna from "../pages/FarmRequest/Qna";
-import AddReview from "../pages/Review/AddReview";
-import EditReview from "../pages/Review/EditReview";
+import ReviewDetail from "../pages/Review/ReviewDetail";
 import Mypage from "../pages/Mypage";
 import UserList from "../pages/UserList";
 import FarmRequestDetail from "../pages/FarmRequest/FarmRequestDetail";
@@ -26,8 +25,7 @@ const MainArea = () => {
         <Route path="/" element={<IntroPage />} />
         <Route path="mypage" element={<Mypage />} />
         <Route path="/review" element={<Review />} />
-        <Route path="/review/add" element={<AddReview />} />
-        <Route path="/review/:id" element={<EditReview />} />
+        <Route path="/review/:id" element={<ReviewDetail />} />
         <Route path="/farmer" element={<Farmer />} />
         <Route path="/farmer/add" element={<AddFarmer />} />
         <Route path="/farmer/:id" element={<EditFarmer />} />
