@@ -89,11 +89,11 @@ const Event = () => {
       />
       <GTHeader>
         <GridItem das={1}>ID</GridItem>
-        <GridItem das={4}>Title</GridItem>
-        <GridItem das={1}>Status</GridItem>
-        <GridItem das={3}>Event Period</GridItem>
-        <GridItem das={1}>User name</GridItem>
-        <GridItem das={2}>Create date</GridItem>
+        <GridItem das={4}>제목</GridItem>
+        <GridItem das={3}>이벤트 기간</GridItem>
+        <GridItem das={1}>상태</GridItem>
+        <GridItem das={1}>작성자</GridItem>
+        <GridItem das={2}>작성일</GridItem>
       </GTHeader>
       {eventlist.map((item) => (
         <Grid
@@ -120,8 +120,8 @@ const Event = () => {
           <GridItem das={4} id={item.id}>
             {item.title}
           </GridItem>
-          <GridItem das={1}>{`${item.status}`}</GridItem>
           <GridItem das={3}>{`${item.start_date} ~ ${item.end_date}`}</GridItem>
+          <GridItem das={1}>{`${item.status}`}</GridItem>
           <GridItem das={1}>{item.user_name}</GridItem>
           <GridItem das={2}>
             {format(new Date(item.create_date), "yyyy.MM.dd HH:MM")}

@@ -53,7 +53,7 @@ const ReviewDetail = () => {
             <Typography>{item?.content}</Typography>
           </Grid>
           <Typography variant="h6" component="h2">
-            status
+            상태
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
             <Typography>{item?.status ? "공개" : "비공개"}</Typography>

@@ -1,5 +1,12 @@
 import { AddCircleOutline, Delete } from "@mui/icons-material";
-import { Container, Grid, Typography, Input, Button } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Input,
+  Button,
+  TextareaAutosize
+} from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -153,10 +160,10 @@ const EditEvent = () => {
             내용
           </Typography>
           <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <Input
+            <TextareaAutosize
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              fullWidth
+              style={{ width: "100%" }}
             />
           </Grid>
           <Typography variant="h6" component="h2" sx={{ marginBottom: 3 }}>
@@ -212,9 +219,17 @@ const EditEvent = () => {
             >
               {file &&
                 (typeof file === "object" ? (
-                  <img src={URL.createObjectURL(file)} alt="img" />
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt="img"
+                    style={{ display: "block", height: "300px" }}
+                  />
                 ) : (
-                  <img src={file} alt="imgs" />
+                  <img
+                    src={file}
+                    alt="imgs"
+                    style={{ display: "block", height: "300px" }}
+                  />
                 ))}
               {file && (
                 <Delete

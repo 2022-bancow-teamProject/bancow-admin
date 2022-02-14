@@ -99,10 +99,10 @@ const Review = () => {
       <GTHeader>
         <GridItem das={1}>ID</GridItem>
         <GridItem das={1}>구매자</GridItem>
-        <GridItem das={1}>Status</GridItem>
         <GridItem das={2}>농가명</GridItem>
-        <GridItem das={5}>Title</GridItem>
-        <GridItem das={2}>Create date</GridItem>
+        <GridItem das={5}>제목</GridItem>
+        <GridItem das={1}>상태</GridItem>
+        <GridItem das={2}>생성일</GridItem>
       </GTHeader>
 
       {list.map((item) => (
@@ -124,12 +124,12 @@ const Review = () => {
             <GridItem das={1}>{item.id}</GridItem>
           )}
           <GridItem das={1}>{item.buyer_name}</GridItem>
-          <GridItem das={1} onClick={() => changeStatus(item.id, item.status)}>
-            {item.status ? "공개" : "비공개"}
-          </GridItem>
           <GridItem das={2}>{item.farm_name}</GridItem>
           <GridItem das={5} id={item.id}>
             {item.title}
+          </GridItem>
+          <GridItem das={1} onClick={() => changeStatus(item.id, item.status)}>
+            {item.status ? "공개" : "비공개"}
           </GridItem>
           <GridItem das={2}>
             {format(new Date(item.create_date), "yyyy.MM.dd HH:MM")}
