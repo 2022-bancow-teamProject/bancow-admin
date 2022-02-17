@@ -1,13 +1,22 @@
 import { AppBar, IconButton, Toolbar } from "@mui/material";
-import { AccountCircle, Menu } from "@mui/icons-material";
+import { AccountCircle, Menu, Logout } from "@mui/icons-material";
 import { MenuProps } from "../../interfaces";
 import { drawerWidth } from "../../theme";
 import { useNavigate } from "react-router-dom";
+import { axiosLogout } from "../../api/auth";
 
 const TopAppBar: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
   const myPage = () => {
-    navigate("/admin/mypage");
+    navigate("/manager/admin/mypage");
+  };
+  const logout = async () => {
+    const res = await axiosLogout();
+    if (res) {
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user");
+      navigate("/manager");
+    }
   };
   return (
     <AppBar
@@ -35,10 +44,17 @@ const TopAppBar: React.FC<MenuProps> = ({ isOpen, setIsOpen }) => {
         </IconButton>
         <IconButton
           color="inherit"
-          sx={{ position: "absolute", right: "50px" }}
+          sx={{ position: "absolute", right: "100px" }}
           onClick={myPage}
         >
           <AccountCircle />
+        </IconButton>
+        <IconButton
+          color="inherit"
+          sx={{ position: "absolute", right: "40px" }}
+          onClick={logout}
+        >
+          <Logout />
         </IconButton>
       </Toolbar>
     </AppBar>

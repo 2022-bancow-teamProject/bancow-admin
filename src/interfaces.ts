@@ -7,9 +7,9 @@ export interface MenuProps {
 
 export interface GTSelectorProps {
   isDelete: boolean;
-  checked: number[];
   setIsDelete: Dispatch<SetStateAction<boolean>>;
   setChecked: Dispatch<SetStateAction<number[]>>;
+  delfunc?: (e?: any) => Promise<void> | void;
 }
 
 export interface GTHeaderProps {
@@ -26,9 +26,23 @@ export interface MenuItemProps {
 export interface GridItemProps {
   das: number;
   id?: number;
+  onClick?: () => void;
   children?: React.ReactChild;
 }
 
 export interface ChangeBtn {
-  [func: string]: Dispatch<any>;
+  editform?: boolean;
+  btnstate?: boolean;
+  func?: Dispatch<any>;
+}
+
+export interface AddContentBtn {
+  editform?: boolean;
+  btnstate?: boolean;
+  add?: (e?: any) => Promise<void>;
+}
+
+export interface DatePickerProps {
+  datePick: [string | null, string | null];
+  setDatePick: Dispatch<SetStateAction<[string | null, string | null]>>;
 }
